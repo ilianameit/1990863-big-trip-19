@@ -1,4 +1,4 @@
-import CreationFormView from './view/creation-form-view.js';
+//import CreationFormView from './view/creation-form-view.js';
 //import EditFormView from './view/edit-form-view.js';
 import FiltersView from './view/filters-view.js';
 import SortingView from './view/sorting-view';
@@ -11,7 +11,7 @@ const siteMainTripEvents = siteMainElement.querySelector('.trip-events');
 const siteHeaderElement = document.querySelector('.page-header');
 const siteHeaderFilterElement = siteHeaderElement.querySelector('.trip-controls__filters');
 const pointModel = new PointModel();
-console.log(pointModel);
+//console.log(pointModel);
 const pointPresenter = new PointPresenter({
   pointListContainer: siteMainTripEvents,
   pointModel
