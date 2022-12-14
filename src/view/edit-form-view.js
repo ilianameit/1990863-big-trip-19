@@ -1,13 +1,90 @@
 import {createElement} from '../render.js';
+import {getRandomArrayElement, getRandomPositiveInteger, upperFirstCase} from '../utils.js';
+import {OFFERTYPE, CITYS} from '../const.js';
+import {destanition} from '../mock/destanition.js';
+import {humanizePointDueTime, humanizeEditPointDate} from '../utils.js';
+import {offersByType, returnOffers} from '../mock/offers-by-type.js';
 
-function createEditFormTemplate() {
+//console.log(offersByType);
+
+const typeRandom = getRandomArrayElement(OFFERTYPE);
+const cityRandom = getRandomArrayElement(CITYS);
+const destinationRandom = getRandomArrayElement(destanition);
+const BLANK_POINT = {
+  basePrice: getRandomPositiveInteger(100, 110),
+  dateFrom: '2019-03-18T12:25:56.000Z',
+  dateTo: '2019-03-09T13:35:13.000Z',
+  destination: destinationRandom,
+  city: cityRandom,
+  cities: CITYS,
+  id: '0',
+  offers: [returnOffers(typeRandom)],
+  type: typeRandom,
+  img: destanition[getRandomPositiveInteger(0, destanition.length - 1)].pictures[0].src
+};
+
+function createEditFormTemplate(data) {
+  const{basePrice, dateFrom, dateTo, destination, city, offers, type, cities} = data;
+  //console.log(data);
+  const returnOfferTypes = (arrayOfferType) => {
+    let fieldsets = '';
+    arrayOfferType.forEach( (offerType) => {
+      fieldsets += `
+      <div class="event__type-item">
+        <input id="event-type-${offerType}-1" class="event__type-input  visually-hidden" type="radio" name="event-type" value="${offerType}">
+        <label class="event__type-label  event__type-label--${offerType}" for="event-type-${offerType}-1">${upperFirstCase(offerType)}</label>
+      </div>`;
+    });
+    return fieldsets;
+  };
+  const returnCityValues = (values) => {
+    let citiesArray = '';
+    values.forEach( (cityValue) => {
+      citiesArray += `<option value="${upperFirstCase(cityValue)}"></option>`;
+    });
+    return citiesArray;
+  };
+
+  const isOfferCheck = (offer) => {
+    let result = '';
+    offers.forEach((item) => {
+      if(item.title.toLowerCase() === offer.title.toLowerCase()){
+        result = 'checked';
+      } else{
+        result = '';}
+    });
+    return result;
+  };
+  const showOffers = () => {
+    let offerArray = '';
+
+    offersByType.forEach( (types) => {
+      if(types.type === type){
+        types.offers.forEach((offer) => {
+          offerArray +=
+        `
+        <div class="event__offer-selector">
+          <input class="event__offer-checkbox  visually-hidden" id="event-offer-luggage-1" type="checkbox" name="event-offer-luggage" ${isOfferCheck(offer)}>
+          <label class="event__offer-label" for="event-offer-luggage-1">
+            <span class="event__offer-title">${offer.title}</span>
+            &plus;&euro;&nbsp;
+            <span class="event__offer-price">${offer.price}</span>
+          </label>
+        </div>
+        `;
+        });
+      }
+    });
+    return offerArray;
+  };
+
   return(
     `<form class="event event--edit" action="#" method="post">
     <header class="event__header">
       <div class="event__type-wrapper">
         <label class="event__type  event__type-btn" for="event-type-toggle-1">
           <span class="visually-hidden">Choose event type</span>
-          <img class="event__type-icon" width="17" height="17" src="img/icons/flight.png" alt="Event type icon">
+          <img class="event__type-icon" width="17" height="17" src="img/icons/${type}.png" alt="Event type icon">
         </label>
         <input class="event__type-toggle  visually-hidden" id="event-type-toggle-1" type="checkbox">
 
@@ -15,72 +92,30 @@ function createEditFormTemplate() {
           <fieldset class="event__type-group">
             <legend class="visually-hidden">Event type</legend>
 
-            <div class="event__type-item">
-              <input id="event-type-taxi-1" class="event__type-input  visually-hidden" type="radio" name="event-type" value="taxi">
-              <label class="event__type-label  event__type-label--taxi" for="event-type-taxi-1">Taxi</label>
-            </div>
+            ${returnOfferTypes(OFFERTYPE)}
 
-            <div class="event__type-item">
-              <input id="event-type-bus-1" class="event__type-input  visually-hidden" type="radio" name="event-type" value="bus">
-              <label class="event__type-label  event__type-label--bus" for="event-type-bus-1">Bus</label>
-            </div>
 
-            <div class="event__type-item">
-              <input id="event-type-train-1" class="event__type-input  visually-hidden" type="radio" name="event-type" value="train">
-              <label class="event__type-label  event__type-label--train" for="event-type-train-1">Train</label>
-            </div>
-
-            <div class="event__type-item">
-              <input id="event-type-ship-1" class="event__type-input  visually-hidden" type="radio" name="event-type" value="ship">
-              <label class="event__type-label  event__type-label--ship" for="event-type-ship-1">Ship</label>
-            </div>
-
-            <div class="event__type-item">
-              <input id="event-type-drive-1" class="event__type-input  visually-hidden" type="radio" name="event-type" value="drive">
-              <label class="event__type-label  event__type-label--drive" for="event-type-drive-1">Drive</label>
-            </div>
-
-            <div class="event__type-item">
-              <input id="event-type-flight-1" class="event__type-input  visually-hidden" type="radio" name="event-type" value="flight" checked>
-              <label class="event__type-label  event__type-label--flight" for="event-type-flight-1">Flight</label>
-            </div>
-
-            <div class="event__type-item">
-              <input id="event-type-check-in-1" class="event__type-input  visually-hidden" type="radio" name="event-type" value="check-in">
-              <label class="event__type-label  event__type-label--check-in" for="event-type-check-in-1">Check-in</label>
-            </div>
-
-            <div class="event__type-item">
-              <input id="event-type-sightseeing-1" class="event__type-input  visually-hidden" type="radio" name="event-type" value="sightseeing">
-              <label class="event__type-label  event__type-label--sightseeing" for="event-type-sightseeing-1">Sightseeing</label>
-            </div>
-
-            <div class="event__type-item">
-              <input id="event-type-restaurant-1" class="event__type-input  visually-hidden" type="radio" name="event-type" value="restaurant">
-              <label class="event__type-label  event__type-label--restaurant" for="event-type-restaurant-1">Restaurant</label>
-            </div>
           </fieldset>
         </div>
       </div>
 
       <div class="event__field-group  event__field-group--destination">
         <label class="event__label  event__type-output" for="event-destination-1">
-          Flight
+          ${type}
         </label>
-        <input class="event__input  event__input--destination" id="event-destination-1" type="text" name="event-destination" value="Chamonix" list="destination-list-1">
+        <input class="event__input  event__input--destination" id="event-destination-1" type="text" name="event-destination" value="${city}" list="destination-list-1">
         <datalist id="destination-list-1">
-          <option value="Amsterdam"></option>
-          <option value="Geneva"></option>
-          <option value="Chamonix"></option>
+          ${returnCityValues(cities)}
+
         </datalist>
       </div>
 
       <div class="event__field-group  event__field-group--time">
         <label class="visually-hidden" for="event-start-time-1">From</label>
-        <input class="event__input  event__input--time" id="event-start-time-1" type="text" name="event-start-time" value="18/03/19 12:25">
+        <input class="event__input  event__input--time" id="event-start-time-1" type="text" name="event-start-time" value="${humanizeEditPointDate(dateFrom)} ${humanizePointDueTime(dateFrom)}">
         &mdash;
         <label class="visually-hidden" for="event-end-time-1">To</label>
-        <input class="event__input  event__input--time" id="event-end-time-1" type="text" name="event-end-time" value="18/03/19 13:35">
+        <input class="event__input  event__input--time" id="event-end-time-1" type="text" name="event-end-time" value="${humanizeEditPointDate(dateTo)} ${humanizePointDueTime(dateTo)}">
       </div>
 
       <div class="event__field-group  event__field-group--price">
@@ -88,7 +123,7 @@ function createEditFormTemplate() {
           <span class="visually-hidden">Price</span>
           &euro;
         </label>
-        <input class="event__input  event__input--price" id="event-price-1" type="text" name="event-price" value="160">
+        <input class="event__input  event__input--price" id="event-price-1" type="text" name="event-price" value="${basePrice}">
       </div>
 
       <button class="event__save-btn  btn  btn--blue" type="submit">Save</button>
@@ -102,64 +137,25 @@ function createEditFormTemplate() {
         <h3 class="event__section-title  event__section-title--offers">Offers</h3>
 
         <div class="event__available-offers">
-          <div class="event__offer-selector">
-            <input class="event__offer-checkbox  visually-hidden" id="event-offer-luggage-1" type="checkbox" name="event-offer-luggage" checked>
-            <label class="event__offer-label" for="event-offer-luggage-1">
-              <span class="event__offer-title">Add luggage</span>
-              &plus;&euro;&nbsp;
-              <span class="event__offer-price">50</span>
-            </label>
-          </div>
-
-          <div class="event__offer-selector">
-            <input class="event__offer-checkbox  visually-hidden" id="event-offer-comfort-1" type="checkbox" name="event-offer-comfort" checked>
-            <label class="event__offer-label" for="event-offer-comfort-1">
-              <span class="event__offer-title">Switch to comfort</span>
-              &plus;&euro;&nbsp;
-              <span class="event__offer-price">80</span>
-            </label>
-          </div>
-
-          <div class="event__offer-selector">
-            <input class="event__offer-checkbox  visually-hidden" id="event-offer-meal-1" type="checkbox" name="event-offer-meal">
-            <label class="event__offer-label" for="event-offer-meal-1">
-              <span class="event__offer-title">Add meal</span>
-              &plus;&euro;&nbsp;
-              <span class="event__offer-price">15</span>
-            </label>
-          </div>
-
-          <div class="event__offer-selector">
-            <input class="event__offer-checkbox  visually-hidden" id="event-offer-seats-1" type="checkbox" name="event-offer-seats">
-            <label class="event__offer-label" for="event-offer-seats-1">
-              <span class="event__offer-title">Choose seats</span>
-              &plus;&euro;&nbsp;
-              <span class="event__offer-price">5</span>
-            </label>
-          </div>
-
-          <div class="event__offer-selector">
-            <input class="event__offer-checkbox  visually-hidden" id="event-offer-train-1" type="checkbox" name="event-offer-train">
-            <label class="event__offer-label" for="event-offer-train-1">
-              <span class="event__offer-title">Travel by train</span>
-              &plus;&euro;&nbsp;
-              <span class="event__offer-price">40</span>
-            </label>
-          </div>
+          ${showOffers()}
         </div>
       </section>
 
       <section class="event__section  event__section--destination">
         <h3 class="event__section-title  event__section-title--destination">Destination</h3>
-        <p class="event__destination-description">Chamonix-Mont-Blanc (usually shortened to Chamonix) is a resort area near the junction of France, Switzerland and Italy. At the base of Mont Blanc, the highest summit in the Alps, it's renowned for its skiing.</p>
+        <p class="event__destination-description">${destination.description}</p>
       </section>
     </section>
     </form>`
   );
 }
 export default class EditFormView {
+  constructor({point = BLANK_POINT}){
+    this.point = point;
+  }
+
   getTemplate() {
-    return createEditFormTemplate();
+    return createEditFormTemplate(this.point);
   }
 
   getElement() {
