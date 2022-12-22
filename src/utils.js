@@ -37,6 +37,7 @@ function differentDate(from, to){
     return (
       `${dayResult}D ${Math.round(hourResult / HOURS_PER_DAY)}H ${Math.round(minuteResult / (HOURS_PER_DAY * MIN_IN_AN_HOUR))}M`
     );
+
   }
   if(hourResult){
     return(
@@ -46,6 +47,7 @@ function differentDate(from, to){
   return(
     `${minuteResult}M`
   );
+
 
 
 }

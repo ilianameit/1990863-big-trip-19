@@ -1,4 +1,5 @@
 import {createElement} from '../render.js';
+//import PointModel from '../model/point-model.js';
 
 function createWaypointListedTemplate() {
   return(

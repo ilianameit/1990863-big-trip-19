@@ -143,6 +143,7 @@ function createEditFormTemplate(data) {
   );
 }
 export default class EditFormView {
+
   #point = null;
   #element = null;
   constructor({point = BLANK_POINT}){
@@ -151,6 +152,7 @@ export default class EditFormView {
 
   get template() {
     return createEditFormTemplate(this.#point);
+
   }
 
   get element() {
