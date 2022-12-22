@@ -1,12 +1,12 @@
 import {createElement} from '../render.js';
 
-import {humanizePointDueDate, humanizePointDueTime, differentDate, upperFirstCase} from '../utils.js';
+import {humanizeDate,DATE_FORMAT, TIME_FORMAT, differentDate, upperFirstCase} from '../utils.js';
 
 function createPointTemplate(point) {
   const {basePrice, dateFrom, dateTo, destination, isFavorite, type, img} = point;
-  const dateFromFormatted = humanizePointDueDate(dateFrom);
-  const timeFrom = humanizePointDueTime(dateFrom);
-  const timeTo = humanizePointDueTime(dateTo);
+  const dateFromFormatted = humanizeDate(dateFrom, DATE_FORMAT);
+  const timeFrom = humanizeDate(dateFrom, TIME_FORMAT);
+  const timeTo = humanizeDate(dateTo, TIME_FORMAT);
   const favorite = () => {
     if(isFavorite) {
       return 'event__favorite-btn--active';

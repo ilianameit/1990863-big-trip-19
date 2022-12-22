@@ -2,6 +2,8 @@ import dayjs from 'dayjs';
 const DATE_FORMAT = 'MMM D';
 const TIME_FORMAT = 'HH:mm';
 const EDIT_DATE_FORMAT = 'DD/MM/YY';
+const HOURS_PER_DAY = 24;
+const MIN_IN_AN_HOUR = 60;
 
 function getRandomArrayElement(items) {
   return items[Math.floor(Math.random() * items.length)];
@@ -17,15 +19,10 @@ function getRandomPositiveInteger(a, b) {
   return Math.floor(result);
 }
 
-function humanizePointDueDate(dueDate) {
-  return dueDate ? dayjs(dueDate).format(DATE_FORMAT) : '';
+function humanizeDate(dueDate, dateFormat) {
+  return dueDate ? dayjs(dueDate).format(dateFormat) : '';
 }
-function humanizePointDueTime(dueDate) {
-  return dueDate ? dayjs(dueDate).format(TIME_FORMAT) : '';
-}
-function humanizeEditPointDate(dueDate) {
-  return dueDate ? dayjs(dueDate).format(EDIT_DATE_FORMAT) : '';
-}
+
 function upperFirstCase(word){
   return (word[0].toUpperCase() + word.slice(1));
 }
@@ -38,12 +35,12 @@ function differentDate(from, to){
   const minuteResult = date2.diff(date1, 'minute');
   if(dayResult){
     return (
-      `${dayResult}D ${Math.round(hourResult / 24)}H ${Math.round(minuteResult / (24 * 60))}M`
+      `${dayResult}D ${Math.round(hourResult / HOURS_PER_DAY)}H ${Math.round(minuteResult / (HOURS_PER_DAY * MIN_IN_AN_HOUR))}M`
     );
   }
   if(hourResult){
     return(
-      `${hourResult}H ${Math.round(minuteResult / 24)}M`
+      `${hourResult}H ${Math.round(minuteResult / HOURS_PER_DAY)}M`
     );
   }
   return(
@@ -52,4 +49,4 @@ function differentDate(from, to){
 
 
 }
-export {getRandomArrayElement, getRandomPositiveInteger, humanizePointDueDate, humanizePointDueTime, differentDate, humanizeEditPointDate, upperFirstCase};
+export {getRandomArrayElement, getRandomPositiveInteger, differentDate, humanizeDate, DATE_FORMAT, TIME_FORMAT, EDIT_DATE_FORMAT, upperFirstCase};

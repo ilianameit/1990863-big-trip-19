@@ -2,9 +2,7 @@ import {createElement} from '../render.js';
 
 function createWaypointListedTemplate() {
   return(
-    `<ul class="trip-events__list">
-
-          </ul>`
+    '<ul class="trip-events__list"></ul>'
   );
 }
 export default class WaypointListedView {
