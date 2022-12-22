@@ -5,6 +5,7 @@ import {render} from '../render.js';
 import EditFormView from '../view/edit-form-view.js';
 
 export default class PointPresenter {
+
   #pointListContainer = null;
   #pointModel = null;
   #pointListComponent = new WaypointListedView();
@@ -13,10 +14,12 @@ export default class PointPresenter {
   constructor({pointListContainer, pointModel}) {
     this.#pointListContainer = pointListContainer;
     this.#pointModel = pointModel;
+
   }
 
 
   init() {
+
     this.#points = [...this.#pointModel.points];
 
     render(this.#pointListComponent, this.#pointListContainer);
@@ -64,4 +67,5 @@ export default class PointPresenter {
     render(pointComponent, this.#pointListComponent.element);
 
   }
+
 }
