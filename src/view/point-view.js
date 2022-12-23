@@ -1,12 +1,12 @@
 import {createElement} from '../render.js';
 
-import {humanizePointDueDate, humanizePointDueTime, differentDate, upperFirstCase} from '../utils.js';
+import {humanizeDate,DATE_FORMAT, TIME_FORMAT, differentDate, upperFirstCase} from '../utils.js';
 
 function createPointTemplate(point) {
   const {basePrice, dateFrom, dateTo, destination, isFavorite, type, img} = point;
-  const dateFromFormatted = humanizePointDueDate(dateFrom);
-  const timeFrom = humanizePointDueTime(dateFrom);
-  const timeTo = humanizePointDueTime(dateTo);
+  const dateFromFormatted = humanizeDate(dateFrom, DATE_FORMAT);
+  const timeFrom = humanizeDate(dateFrom, TIME_FORMAT);
+  const timeTo = humanizeDate(dateTo, TIME_FORMAT);
   const favorite = () => {
     if(isFavorite) {
       return 'event__favorite-btn--active';
@@ -55,23 +55,28 @@ function createPointTemplate(point) {
   );
 }
 export default class PointView {
+
+  #element = null;
+  #point = null;
   constructor({point}) {
-    this.point = point;
+    this.#point = point;
   }
 
-  getTemplate() {
-    return createPointTemplate(this.point);
+  get template() {
+    return createPointTemplate(this.#point);
   }
 
-  getElement() {
-    if (!this.element) {
-      this.element = createElement(this.getTemplate());
+  get element() {
+    if (!this.#element) {
+      this.#element = createElement(this.template);
     }
 
-    return this.element;
+    return this.#element;
   }
 
   removeElement() {
-    this.element = null;
+    this.#element = null;
   }
 }
+
+

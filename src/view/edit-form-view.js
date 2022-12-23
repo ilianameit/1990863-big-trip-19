@@ -2,7 +2,7 @@ import {createElement} from '../render.js';
 import {getRandomArrayElement, getRandomPositiveInteger, upperFirstCase} from '../utils.js';
 import {OFFERTYPE, CITYS} from '../const.js';
 import {destanition} from '../mock/destanition.js';
-import {humanizePointDueTime, humanizeEditPointDate} from '../utils.js';
+import {humanizeDate, TIME_FORMAT, EDIT_DATE_FORMAT} from '../utils.js';
 import {offersByType, returnOffers} from '../mock/offers-by-type.js';
 
 //console.log(offersByType);
@@ -45,16 +45,9 @@ function createEditFormTemplate(data) {
     return citiesArray;
   };
 
-  const isOfferCheck = (offer) => {
-    let result = '';
-    offers.forEach((item) => {
-      if(item.title.toLowerCase() === offer.title.toLowerCase()){
-        result = 'checked';
-      } else{
-        result = '';}
-    });
-    return result;
-  };
+  const isOfferChecked = (offer) => (
+    offers.some((item) => item.title.toLowerCase() === offer.title.toLowerCase()) ? 'checked' : ''
+  );
   const showOffers = () => {
     let offerArray = '';
 
@@ -64,7 +57,7 @@ function createEditFormTemplate(data) {
           offerArray +=
         `
         <div class="event__offer-selector">
-          <input class="event__offer-checkbox  visually-hidden" id="event-offer-luggage-1" type="checkbox" name="event-offer-luggage" ${isOfferCheck(offer)}>
+          <input class="event__offer-checkbox  visually-hidden" id="event-offer-luggage-1" type="checkbox" name="event-offer-luggage" ${isOfferChecked(offer)}>
           <label class="event__offer-label" for="event-offer-luggage-1">
             <span class="event__offer-title">${offer.title}</span>
             &plus;&euro;&nbsp;
@@ -112,10 +105,10 @@ function createEditFormTemplate(data) {
 
       <div class="event__field-group  event__field-group--time">
         <label class="visually-hidden" for="event-start-time-1">From</label>
-        <input class="event__input  event__input--time" id="event-start-time-1" type="text" name="event-start-time" value="${humanizeEditPointDate(dateFrom)} ${humanizePointDueTime(dateFrom)}">
+        <input class="event__input  event__input--time" id="event-start-time-1" type="text" name="event-start-time" value="${humanizeDate(dateFrom, EDIT_DATE_FORMAT)} ${humanizeDate(dateFrom, TIME_FORMAT)}">
         &mdash;
         <label class="visually-hidden" for="event-end-time-1">To</label>
-        <input class="event__input  event__input--time" id="event-end-time-1" type="text" name="event-end-time" value="${humanizeEditPointDate(dateTo)} ${humanizePointDueTime(dateTo)}">
+        <input class="event__input  event__input--time" id="event-end-time-1" type="text" name="event-end-time" value="${humanizeDate(dateTo, EDIT_DATE_FORMAT)} ${humanizeDate(dateTo, TIME_FORMAT)}">
       </div>
 
       <div class="event__field-group  event__field-group--price">
@@ -150,23 +143,27 @@ function createEditFormTemplate(data) {
   );
 }
 export default class EditFormView {
+
+  #point = null;
+  #element = null;
   constructor({point = BLANK_POINT}){
-    this.point = point;
+    this.#point = point;
   }
 
-  getTemplate() {
-    return createEditFormTemplate(this.point);
+  get template() {
+    return createEditFormTemplate(this.#point);
+
   }
 
-  getElement() {
-    if (!this.element) {
-      this.element = createElement(this.getTemplate());
+  get element() {
+    if (!this.#element) {
+      this.#element = createElement(this.template);
     }
 
-    return this.element;
+    return this.#element;
   }
 
   removeElement() {
-    this.element = null;
+    this.#element = null;
   }
 }
