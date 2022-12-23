@@ -12,8 +12,8 @@ const cityRandom = getRandomArrayElement(CITYS);
 const destinationRandom = getRandomArrayElement(destanition);
 const BLANK_POINT = {
   basePrice: getRandomPositiveInteger(100, 110),
-  dateFrom: '2019-03-18T12:25:56.000Z',
-  dateTo: '2019-03-09T13:35:13.000Z',
+  dateFrom: '2019-03-18T12:25:56.000',
+  dateTo: '2019-03-09T13:35:13.000',
   destination: destinationRandom,
   city: cityRandom,
   cities: CITYS,

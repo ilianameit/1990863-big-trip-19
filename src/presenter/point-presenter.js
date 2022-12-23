@@ -3,6 +3,8 @@ import WaypointListedView from '../view/waypoint-listed-view.js';
 import PointView from '../view/point-view.js';
 import {render} from '../render.js';
 import EditFormView from '../view/edit-form-view.js';
+import SortingView from '../view/sorting-view';
+import MessageForEmptyListView from '../view/empty-list.js';
 
 export default class PointPresenter {
 
@@ -10,6 +12,8 @@ export default class PointPresenter {
   #pointModel = null;
   #pointListComponent = new WaypointListedView();
   #points = [];
+  #pointShortingComponent = new SortingView();
+  #emptyListPoint = new MessageForEmptyListView();
 
   constructor({pointListContainer, pointModel}) {
     this.#pointListContainer = pointListContainer;
@@ -22,14 +26,7 @@ export default class PointPresenter {
 
     this.#points = [...this.#pointModel.points];
 
-    render(this.#pointListComponent, this.#pointListContainer);
-    //render(new EditFormView({}), this.#pointListComponent.element);
-
-    for (let i = 0; i < this.#points.length; i++) {
-      //render(new PointView({point: this.#points[i]}), this.#pointListComponent.element);
-      this.#renderPoint(this.#points[i]);
-    }
-
+    this.#renderBoard();
   }
 
   #renderPoint(point) {
@@ -64,8 +61,20 @@ export default class PointPresenter {
       replaceFormToCard();
       document.removeEventListener('keydown', escKeyDownHandler);
     });
+    render(this.#pointShortingComponent, this.#pointListContainer);
+    render(this.#pointListComponent, this.#pointListContainer);
     render(pointComponent, this.#pointListComponent.element);
 
+  }
+
+  #renderBoard() {
+    if(this.#points.length){
+      for (let i = 0; i < this.#points.length; i++) {
+        this.#renderPoint(this.#points[i]);
+      }
+    } else {
+      render(this.#emptyListPoint, this.#pointListContainer);
+    }
   }
 
 }
