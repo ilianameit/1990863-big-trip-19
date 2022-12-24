@@ -48,7 +48,5 @@ function differentDate(from, to){
     `${minuteResult}M`
   );
 
-
-
 }
 export {getRandomArrayElement, getRandomPositiveInteger, differentDate, humanizeDate, DATE_FORMAT, TIME_FORMAT, EDIT_DATE_FORMAT, upperFirstCase};
