@@ -1,4 +1,4 @@
-import {createElement} from '../render.js';
+import AbstractView from '../framework/view/abstract-view.js';
 function createMessageForEmptyListTemplate() {
   return (`
     <section class="trip-events">
@@ -16,21 +16,8 @@ function createMessageForEmptyListTemplate() {
      </section>
   `);
 }
-export default class MessageForEmptyListView {
-  #element = null;
+export default class MessageForEmptyListView extends AbstractView{
   get template() {
     return createMessageForEmptyListTemplate();
-  }
-
-  get element() {
-    if (!this.#element) {
-      this.#element = createElement(this.template);
-    }
-
-    return this.#element;
-  }
-
-  removeElement() {
-    this.#element = null;
   }
 }

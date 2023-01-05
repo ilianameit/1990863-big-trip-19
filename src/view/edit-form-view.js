@@ -1,4 +1,4 @@
-import {createElement} from '../render.js';
+import AbstractView from '../framework/view/abstract-view.js';
 import {getRandomArrayElement, getRandomPositiveInteger, upperFirstCase} from '../utils.js';
 import {OFFERTYPE, CITYS} from '../const.js';
 import {destanition} from '../mock/destanition.js';
@@ -142,28 +142,34 @@ function createEditFormTemplate(data) {
     </form>`
   );
 }
-export default class EditFormView {
+export default class EditFormView extends AbstractView {
 
   #point = null;
-  #element = null;
-  constructor({point = BLANK_POINT}){
+  #handleFormSubmit = null;
+  #handleStopEditClick = null;
+  constructor({point = BLANK_POINT, onFormSubmit}){
+    super();
     this.#point = point;
+
+    this.#handleFormSubmit = onFormSubmit;
+    this.element
+      .addEventListener('submit', this.#formSubmitHandler);
+
+    this.#handleStopEditClick = onFormSubmit;
+    this.element.querySelector('.event__rollup-btn')
+      .addEventListener('click', this.#stopEditHandler);
   }
 
   get template() {
     return createEditFormTemplate(this.#point);
-
   }
 
-  get element() {
-    if (!this.#element) {
-      this.#element = createElement(this.template);
-    }
+  #formSubmitHandler = (evt) => {
+    evt.preventDefault();
+    this.#handleFormSubmit();
+  };
 
-    return this.#element;
-  }
-
-  removeElement() {
-    this.#element = null;
-  }
+  #stopEditHandler = () => {
+    this.#handleStopEditClick();
+  };
 }

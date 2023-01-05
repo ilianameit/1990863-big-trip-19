@@ -1,4 +1,4 @@
-import {createElement} from '../render.js';
+import AbstractView from '../framework/view/abstract-view.js';
 
 function createFiltersTemplate() {
   return(
@@ -27,21 +27,30 @@ function createFiltersTemplate() {
   </form>`
   );
 }
-export default class FiltersView {
-  #element = null;
+export default class FiltersView extends AbstractView{
   get template() {
     return createFiltersTemplate();
   }
 
-  get element() {
-    if (!this.#element) {
-      this.#element = createElement(this.template);
+
+  changeTextFilter() {
+    document.querySelector('form.trip-filters').addEventListener('change', this.#changeTextFilterHandler);
+  }
+
+  #changeTextFilterHandler = (evt) => {
+    const targetInput = evt.target;
+    const messageText = document.querySelector('.trip-events__msg');
+    if(targetInput.value === 'everything'){
+      messageText.textContent = 'Click New Event to create your first point';
     }
-
-    return this.#element;
-  }
-
-  removeElement() {
-    this.#element = null;
-  }
+    if(targetInput.value === 'future'){
+      messageText.textContent = 'There are no future events now';
+    }
+    if(targetInput.value === 'present'){
+      messageText.textContent = 'There are no present events now';
+    }
+    if(targetInput.value === 'past'){
+      messageText.textContent = 'There are no past events now';
+    }
+  };
 }
