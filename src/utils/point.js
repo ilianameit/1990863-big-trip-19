@@ -5,26 +5,8 @@ const EDIT_DATE_FORMAT = 'DD/MM/YY';
 const HOURS_PER_DAY = 24;
 const MIN_IN_AN_HOUR = 60;
 
-function getRandomArrayElement(items) {
-  return items[Math.floor(Math.random() * items.length)];
-}
-
-function getRandomPositiveInteger(a, b) {
-  if (a < 0 || b < 0) {
-    return NaN;
-  }
-  const lower = Math.ceil(Math.min(a, b));
-  const upper = Math.floor(Math.max(a, b));
-  const result = Math.round(Math.random() * (upper - lower) + lower);
-  return Math.floor(result);
-}
-
 function humanizeDate(dueDate, dateFormat) {
   return dueDate ? dayjs(dueDate).format(dateFormat) : '';
-}
-
-function upperFirstCase(word){
-  return (word[0].toUpperCase() + word.slice(1));
 }
 function differentDate(from, to){
   const date1 = dayjs(from);
@@ -49,4 +31,4 @@ function differentDate(from, to){
   );
 
 }
-export {getRandomArrayElement, getRandomPositiveInteger, differentDate, humanizeDate, DATE_FORMAT, TIME_FORMAT, EDIT_DATE_FORMAT, upperFirstCase};
+export {differentDate, humanizeDate, DATE_FORMAT, TIME_FORMAT, EDIT_DATE_FORMAT};

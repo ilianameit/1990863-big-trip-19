@@ -1,4 +1,4 @@
-import {getRandomArrayElement, getRandomPositiveInteger} from '../utils.js';
+import {getRandomArrayElement, getRandomPositiveInteger} from '../utils/common.js';
 import {CITYS} from '../const.js';
 
 const destanition = [

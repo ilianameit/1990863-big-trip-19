@@ -1,8 +1,8 @@
 import AbstractView from '../framework/view/abstract-view.js';
-import {getRandomArrayElement, getRandomPositiveInteger, upperFirstCase} from '../utils.js';
+import {getRandomArrayElement, getRandomPositiveInteger, upperFirstCase} from '../utils/common.js';
 import {OFFERTYPE, CITYS} from '../const.js';
 import {destanition} from '../mock/destanition.js';
-import {humanizeDate, TIME_FORMAT, EDIT_DATE_FORMAT} from '../utils.js';
+import {humanizeDate, TIME_FORMAT, EDIT_DATE_FORMAT} from '../utils/point.js';
 import {offersByType, returnOffers} from '../mock/offers-by-type.js';
 
 //console.log(offersByType);
@@ -25,7 +25,7 @@ const BLANK_POINT = {
 
 function createEditFormTemplate(data) {
   const{basePrice, dateFrom, dateTo, destination, city, offers, type, cities} = data;
-  //console.log(data);
+  //console.log(basePrice, dateFrom, dateTo, destination, city, offers, type, cities);
   const returnOfferTypes = (arrayOfferType) => {
     let fieldsets = '';
     arrayOfferType.forEach( (offerType) => {
@@ -173,3 +173,4 @@ export default class EditFormView extends AbstractView {
     this.#handleStopEditClick();
   };
 }
+export {BLANK_POINT};

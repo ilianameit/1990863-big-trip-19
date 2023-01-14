@@ -1,7 +1,7 @@
 import AbstractView from '../framework/view/abstract-view.js';
 
-import {humanizeDate,DATE_FORMAT, TIME_FORMAT, differentDate, upperFirstCase} from '../utils.js';
-
+import {upperFirstCase} from '../utils/common.js';
+import {differentDate, humanizeDate, DATE_FORMAT, TIME_FORMAT} from '../utils/point.js';
 function createPointTemplate(point) {
   const {basePrice, dateFrom, dateTo, destination, isFavorite, type, img} = point;
   const dateFromFormatted = humanizeDate(dateFrom, DATE_FORMAT);

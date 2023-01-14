@@ -17,6 +17,6 @@ const pointPresenter = new PointPresenter({
   pointModel
 });
 pointPresenter.init();
-const filtersPresenter = new FiltersPresenter({filterContainer: siteHeaderFilterElement});
-filtersPresenter.init(pointModel);
+const filtersPresenter = new FiltersPresenter({filterContainer: siteHeaderFilterElement}, pointModel);
+filtersPresenter.init();
 
