@@ -4,7 +4,7 @@ function generateFilter(points) {
   return Object.entries(filter).map(
     ([filterName, filterTasks]) => ({
       name: filterName,
-      count: filterTasks(points),
+      count: filterTasks(points).length,
     }),
   );
 }

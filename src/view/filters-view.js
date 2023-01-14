@@ -1,7 +1,7 @@
 import AbstractView from '../framework/view/abstract-view.js';
 
 function createFilterItemTemplate(filter, isChecked){
-  const {name} = filter;
+  const {name, count} = filter;
 
   return (
     ` <div class="trip-filters__filter">
@@ -11,7 +11,8 @@ function createFilterItemTemplate(filter, isChecked){
         type="radio"
         name="trip-filter"
         value="${name}"
-        ${isChecked ? 'checked' : ''}>
+        ${isChecked ? 'checked' : ''}
+        ${count === 0 ? 'disabled' : ''}>
       <label class="trip-filters__filter-label" for="filter-${name}">${name}</label>
     </div>`
   );
