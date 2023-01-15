@@ -73,6 +73,7 @@ export default class PointPresenter {
     function replaceFormToCard() {
       this.#pointListComponent.element.replaceChild(pointComponent.element, pointEditComponent.element);
     }
+    //#renderShort() {}
     render(this.#pointShortingComponent, this.#pointListContainer);
     render(this.#pointListComponent, this.#pointListContainer);
     render(pointComponent, this.#pointListComponent.element);
