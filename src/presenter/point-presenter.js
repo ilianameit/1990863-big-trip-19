@@ -2,7 +2,7 @@
 import WaypointListedView from '../view/waypoint-listed-view.js';
 import PointView from '../view/point-view.js';
 import {render} from '../framework/render.js';
-import EditFormView from '../view/edit-form-view.js';
+import EditFormView, {BLANK_POINT} from '../view/edit-form-view.js';
 import SortingView from '../view/sorting-view';
 import MessageForEmptyListView from '../view/empty-list.js';
 
@@ -60,7 +60,8 @@ export default class PointPresenter {
         document.addEventListener('keydown', escKeyDownHandler);
       }
     });
-    const pointEditComponent = new EditFormView(point,{
+    const pointEditComponent = new EditFormView({
+      BLANK_POINT,
       onFormSubmit: () => {
         replaceFormToCard.call(this);
         document.removeEventListener('keydown', escKeyDownHandler);
@@ -72,6 +73,7 @@ export default class PointPresenter {
     function replaceFormToCard() {
       this.#pointListComponent.element.replaceChild(pointComponent.element, pointEditComponent.element);
     }
+    //#renderShort() {}
     render(this.#pointShortingComponent, this.#pointListContainer);
     render(this.#pointListComponent, this.#pointListContainer);
     render(pointComponent, this.#pointListComponent.element);
