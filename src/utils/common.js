@@ -16,4 +16,8 @@ function upperFirstCase(word){
   return (word[0].toUpperCase() + word.slice(1));
 }
 
-export {getRandomArrayElement, getRandomPositiveInteger, upperFirstCase};
+function updateItem(items, update) {
+  return items.map((item) => item.id === update.id ? update : item);
+}
+
+export {getRandomArrayElement, getRandomPositiveInteger, upperFirstCase, updateItem};

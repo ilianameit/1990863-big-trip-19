@@ -1,5 +1,5 @@
 import { OFFER } from './offer.js';
-import {getRandomArrayElement} from '../utils/common.js';
+//import {getRandomArrayElement} from '../utils/common.js';
 
 const returnArrayOffer = (keyId) => {
   const arrayOffer = OFFER.filter((item) => item.id === keyId);
@@ -43,10 +43,9 @@ const offersByType = [
     offers: returnArrayOffer(9),
   },
 ];
-const returnOffers = (type) => {
+function returnOffers(type){
   const objectType = offersByType.filter((item) => item.type === type);
-  const offers = getRandomArrayElement(objectType);
-  return getRandomArrayElement(offers.offers);
-};
+  return objectType[0].offers;
+}
 
 export {offersByType, returnOffers};

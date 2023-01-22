@@ -17,10 +17,13 @@ export default class FiltersPresenter {
   }
 
   init() {
+    this.#renderFilters();
+  }
+
+  #renderFilters(){
     render(this.#filterComponent, this.#filterContainer);
     if(!this.#points.length){
       this.#filterComponent.changeTextFilter();
     }
   }
-
 }
