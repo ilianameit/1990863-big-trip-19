@@ -31,4 +31,38 @@ function differentDate(from, to){
   );
 
 }
-export {differentDate, humanizeDate, DATE_FORMAT, TIME_FORMAT, EDIT_DATE_FORMAT};
+function getWeightSort(valueA, valueB) {
+  if (valueA === null && valueB === null) {
+    return 0;
+  }
+
+  if (valueA === null) {
+    return 1;
+  }
+
+  if (valueB === null) {
+    return -1;
+  }
+
+  return null;
+}
+function sortDayUp(pointA, pointB) {
+  const weight = getWeightSort(pointA.dateFrom, pointB.dateFrom);
+
+  return weight ?? dayjs(pointA.dateFrom).diff(dayjs(pointB.dateFrom));
+}
+
+function sortTime(pointA, pointB) {
+  const timeA = dayjs(pointA.dateTo).diff(dayjs(pointA.dateFrom));
+  const timeB = dayjs(pointB.dateTo).diff(dayjs(pointB.dateFrom));
+  const weight = getWeightSort(timeA, timeB);
+
+  return weight ;
+}
+function sortPrice(pointA, pointB) {
+  const weight = getWeightSort(pointA.basePrice, pointB.basePrice);
+
+  return weight;
+}
+
+export {differentDate, humanizeDate, DATE_FORMAT, TIME_FORMAT, EDIT_DATE_FORMAT, sortDayUp, sortTime, sortPrice};

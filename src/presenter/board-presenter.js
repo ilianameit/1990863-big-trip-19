@@ -5,6 +5,8 @@ import SortingView from '../view/sorting-view';
 import MessageForEmptyListView from '../view/empty-list.js';
 import PointPresenter from './point-presenter.js';
 import {updateItem} from '../utils/common.js';
+import {SortType} from '../const.js';
+import {sortTime, sortPrice} from '../utils/point.js';
 
 export default class BoardPresenter {
 
@@ -12,9 +14,11 @@ export default class BoardPresenter {
   #pointModel = null;
   #pointListComponent = new WaypointListedView();
   #points = [];
-  #pointShortingComponent = new SortingView();
+  #pointShortingComponent = null;
   #emptyListPoint = new MessageForEmptyListView();
   #pointsPresenter = new Map();
+  #currentSortType = SortType.DAY;
+  #sourcedBoardPoints = [];
 
   constructor({pointListContainer, pointModel}) {
     this.#pointListContainer = pointListContainer;
@@ -26,16 +30,46 @@ export default class BoardPresenter {
   init() {
 
     this.#points = [...this.#pointModel.points];
-
+    this.#sourcedBoardPoints = [...this.#pointModel.points];
     this.#renderBoard();
   }
 
   #handlePointChange = (updatedPoint) => {
     this.#points = updateItem(this.#points, updatedPoint);
+    this.#sourcedBoardPoints = updateItem(this.#sourcedBoardPoints, updatedPoint);
     this.#pointsPresenter.get(updatedPoint.id).init(updatedPoint);
   };
 
+  #sortPoints(sortType){
+    switch (sortType) {
+      case SortType.TIME:
+        this.#points.sort(sortTime);
+        break;
+      case SortType.PRICE:
+        this.#points.sort(sortPrice);
+        break;
+      default:
+        this.#points = [...this.#sourcedBoardPoints];
+        break;
+    }
+    this.#currentSortType = sortType;
+
+  }
+
+  #handleSortTypeChange = (sortType) => {
+    if (this.#currentSortType === sortType) {
+      return;
+    }
+
+    this.#sortPoints(sortType);
+    this.#clearPointList();
+    this.#renderPointList();
+  };
+
   #renderShort() {
+    this.#pointShortingComponent = new SortingView({
+      onSortTypeChange: this.#handleSortTypeChange
+    });
     render(this.#pointShortingComponent, this.#pointListContainer, RenderPosition.AFTERBEGIN);
   }
 
