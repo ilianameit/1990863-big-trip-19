@@ -164,7 +164,7 @@ export default class EditFormView extends AbstractView {
   };
 
   #stopEditHandler = () => {
-    this.#handleStopEditClick();
+    this.#handleStopEditClick(this.#point);
   };
 }
 export {BLANK_POINT};

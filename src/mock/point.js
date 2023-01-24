@@ -49,7 +49,7 @@ const points = [
   {
     basePrice: getRandomPositiveInteger(500, 850),
     dateFrom: '2019-05-12T12:30:56.845Z',
-    dateTo: '2019-05-13T09:30:13.375Z',
+    dateTo: '2019-05-12T13:30:13.375Z',
     destination: destanition[getRandomPositiveInteger(0, destanition.length - 1)].name,
     ids: '1',
     isFavorite:  Boolean(0, 1),
