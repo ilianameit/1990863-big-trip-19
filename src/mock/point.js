@@ -1,7 +1,14 @@
+import {nanoid} from 'nanoid';
 import {getRandomArrayElement, getRandomPositiveInteger} from '../utils/common.js';
-import {offersByType} from './offers-by-type.js';
+import {returnOffers} from './offers-by-type.js';
 import {OFFERTYPE} from '../const.js';
 import {destanition} from './destanition.js';
+
+
+const type1 = getRandomArrayElement(OFFERTYPE);
+const type2 = getRandomArrayElement(OFFERTYPE);
+const type3 = getRandomArrayElement(OFFERTYPE);
+const type4 = getRandomArrayElement(OFFERTYPE);
 
 const points = [
   {
@@ -9,21 +16,23 @@ const points = [
     dateFrom: '2019-07-10T22:55:56.845Z',
     dateTo: '2019-07-11T11:22:13.375Z',
     destination: destanition[getRandomPositiveInteger(0, destanition.length - 1)].name,
-    id: '0',
+    ids: '0',
     isFavorite:  Boolean(getRandomPositiveInteger(0, 1)),
-    offers: offersByType[getRandomPositiveInteger(0, offersByType.length - 1)].offers,
-    type: getRandomArrayElement(OFFERTYPE),
-    img: destanition[getRandomPositiveInteger(0, destanition.length - 1)].pictures[0].src
+    //offers: getRandomArrayElement(offersByType[getRandomPositiveInteger(0, offersByType.length - 1)].offers),
+    type: type1,
+    offers: [getRandomArrayElement(returnOffers(type1)),getRandomArrayElement(returnOffers(type1))],
+    img: destanition[getRandomPositiveInteger(0, destanition.length - 1)].pictures[0].src,
+
   },
   {
     basePrice: getRandomPositiveInteger(500, 850),
     dateFrom: '2019-05-12T12:30:56.845Z',
     dateTo: '2019-05-13T09:30:13.375Z',
     destination: destanition[getRandomPositiveInteger(0, destanition.length - 1)].name,
-    id: '1',
+    ids: '1',
     isFavorite:  Boolean(0, 1),
-    offers: offersByType[getRandomPositiveInteger(0, offersByType.length - 1)].offers,
-    type: getRandomArrayElement(OFFERTYPE),
+    type: type2,
+    offers:[getRandomArrayElement(returnOffers(type2)),getRandomArrayElement(returnOffers(type2))],
     img: destanition[getRandomPositiveInteger(0, destanition.length - 1)].pictures[0].src
   },
   {
@@ -31,10 +40,10 @@ const points = [
     dateFrom: '2019-06-19T12:30:56.845Z',
     dateTo: '2019-06-19T13:30:13.375Z',
     destination: destanition[getRandomPositiveInteger(0, destanition.length - 1)].name,
-    id: '1',
+    ids: '1',
     isFavorite:  Boolean(0, 0),
-    offers: offersByType[getRandomPositiveInteger(0, offersByType.length - 1)].offers,
-    type: getRandomArrayElement(OFFERTYPE),
+    type: type3,
+    offers:returnOffers(type3),
     img: destanition[getRandomPositiveInteger(0, destanition.length - 1)].pictures[0].src
   },
   {
@@ -42,16 +51,19 @@ const points = [
     dateFrom: '2019-05-12T12:30:56.845Z',
     dateTo: '2019-05-13T09:30:13.375Z',
     destination: destanition[getRandomPositiveInteger(0, destanition.length - 1)].name,
-    id: '1',
+    ids: '1',
     isFavorite:  Boolean(0, 1),
-    offers: offersByType[getRandomPositiveInteger(0, offersByType.length - 1)].offers,
-    type: getRandomArrayElement(OFFERTYPE),
+    type: type4,
+    offers:returnOffers(type4),
     img: destanition[getRandomPositiveInteger(0, destanition.length - 1)].pictures[0].src
   },
 
 ];
 function getRandomPoints() {
-  return getRandomArrayElement(points);
+  return {
+    id: nanoid(),
+    ...getRandomArrayElement(points)
+  };
 }
 
 export {getRandomPoints};

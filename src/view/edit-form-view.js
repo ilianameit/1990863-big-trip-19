@@ -3,9 +3,7 @@ import {getRandomArrayElement, getRandomPositiveInteger, upperFirstCase} from '.
 import {OFFERTYPE, CITYS} from '../const.js';
 import {destanition} from '../mock/destanition.js';
 import {humanizeDate, TIME_FORMAT, EDIT_DATE_FORMAT} from '../utils/point.js';
-import {offersByType, returnOffers} from '../mock/offers-by-type.js';
-
-//console.log(offersByType);
+import { returnOffers} from '../mock/offers-by-type.js';
 
 const typeRandom = getRandomArrayElement(OFFERTYPE);
 const cityRandom = getRandomArrayElement(CITYS);
@@ -18,58 +16,57 @@ const BLANK_POINT = {
   city: cityRandom,
   cities: CITYS,
   id: '0',
-  offers: [returnOffers(typeRandom)],
+  offers: returnOffers(typeRandom),
   type: typeRandom,
   img: destanition[getRandomPositiveInteger(0, destanition.length - 1)].pictures[0].src
 };
 
-function createEditFormTemplate(data) {
-  const{basePrice, dateFrom, dateTo, destination, city, offers, type, cities} = data;
-  //console.log(basePrice, dateFrom, dateTo, destination, city, offers, type, cities);
-  const returnOfferTypes = (arrayOfferType) => {
-    let fieldsets = '';
-    arrayOfferType.forEach( (offerType) => {
-      fieldsets += `
+function createOfferTypes() {
+  return OFFERTYPE.map( (offerType, index) =>
+    `
       <div class="event__type-item">
-        <input id="event-type-${offerType}-1" class="event__type-input  visually-hidden" type="radio" name="event-type" value="${offerType}">
-        <label class="event__type-label  event__type-label--${offerType}" for="event-type-${offerType}-1">${upperFirstCase(offerType)}</label>
-      </div>`;
-    });
-    return fieldsets;
-  };
-  const returnCityValues = (values) => {
-    let citiesArray = '';
-    values.forEach( (cityValue) => {
-      citiesArray += `<option value="${upperFirstCase(cityValue)}"></option>`;
-    });
-    return citiesArray;
-  };
+        <input id="event-type-${offerType}-${index}" class="event__type-input  visually-hidden" type="radio" name="event-type" value="${offerType}">
+        <label class="event__type-label  event__type-label--${offerType}" for="event-type-${offerType}-${index}">${upperFirstCase(offerType)}</label>
+      </div>
+    `
+  ).join('');
+}
+function createListCities(values) {
+  return values.map(
+    (cityValue) =>
+      `<option value="${upperFirstCase(cityValue)}"></option>`
+  ).join('');
+}
 
-  const isOfferChecked = (offer) => (
-    offers.some((item) => item.title.toLowerCase() === offer.title.toLowerCase()) ? 'checked' : ''
-  );
-  const showOffers = () => {
-    let offerArray = '';
+function createOffers(type, offers) {
+  const offersType = returnOffers(type);
 
-    offersByType.forEach( (types) => {
-      if(types.type === type){
-        types.offers.forEach((offer) => {
-          offerArray +=
-        `
-        <div class="event__offer-selector">
-          <input class="event__offer-checkbox  visually-hidden" id="event-offer-luggage-1" type="checkbox" name="event-offer-luggage" ${isOfferChecked(offer)}>
-          <label class="event__offer-label" for="event-offer-luggage-1">
-            <span class="event__offer-title">${offer.title}</span>
-            &plus;&euro;&nbsp;
-            <span class="event__offer-price">${offer.price}</span>
-          </label>
-        </div>
-        `;
-        });
-      }
-    });
-    return offerArray;
-  };
+  function isOfferChecked(currentOffers,offer) {
+    return currentOffers.find( (currentOffer) => currentOffer.title.toLowerCase() === offer.title.toLowerCase()) ;
+  }
+
+  return offersType.map(
+    (offer, index) =>
+      `
+      <div class="event__offer-selector">
+        <input class="event__offer-checkbox  visually-hidden" id="event-offer-luggage-${index}" type="checkbox" name="event-offer-luggage" ${isOfferChecked(offers, offer) ? 'checked' : ''}>
+        <label class="event__offer-label" for="event-offer-luggage-${index}">
+          <span class="event__offer-title">${offer.title}</span>
+          &plus;&euro;&nbsp;
+          <span class="event__offer-price">${offer.price}</span>
+        </label>
+      </div>
+      `
+  ).join('');
+}
+
+
+function createEditFormTemplate(data) {
+  const{basePrice, dateFrom, dateTo, destination, offers, type} = data;
+  //console.log(basePrice, dateFrom, dateTo, destination, city, offers, type, cities);
+  const offerTypes = createOfferTypes();
+  const cityList = createListCities(CITYS);
+  const showOffers = createOffers(type, offers);
 
   return(
     `<form class="event event--edit" action="#" method="post">
@@ -84,10 +81,7 @@ function createEditFormTemplate(data) {
         <div class="event__type-list">
           <fieldset class="event__type-group">
             <legend class="visually-hidden">Event type</legend>
-
-            ${returnOfferTypes(OFFERTYPE)}
-
-
+            ${offerTypes}
           </fieldset>
         </div>
       </div>
@@ -96,9 +90,9 @@ function createEditFormTemplate(data) {
         <label class="event__label  event__type-output" for="event-destination-1">
           ${type}
         </label>
-        <input class="event__input  event__input--destination" id="event-destination-1" type="text" name="event-destination" value="${city}" list="destination-list-1">
+        <input class="event__input  event__input--destination" id="event-destination-1" type="text" name="event-destination" value="${destination}" list="destination-list-1">
         <datalist id="destination-list-1">
-          ${returnCityValues(cities)}
+          ${cityList}
 
         </datalist>
       </div>
@@ -130,7 +124,7 @@ function createEditFormTemplate(data) {
         <h3 class="event__section-title  event__section-title--offers">Offers</h3>
 
         <div class="event__available-offers">
-          ${showOffers()}
+          ${showOffers}
         </div>
       </section>
 
@@ -166,7 +160,7 @@ export default class EditFormView extends AbstractView {
 
   #formSubmitHandler = (evt) => {
     evt.preventDefault();
-    this.#handleFormSubmit();
+    this.#handleFormSubmit(this.#point);
   };
 
   #stopEditHandler = () => {

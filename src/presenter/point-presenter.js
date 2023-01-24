@@ -1,93 +1,101 @@
-
-import WaypointListedView from '../view/waypoint-listed-view.js';
+import {render, replace, remove} from '../framework/render.js';
 import PointView from '../view/point-view.js';
-import {render} from '../framework/render.js';
-import EditFormView, {BLANK_POINT} from '../view/edit-form-view.js';
-import SortingView from '../view/sorting-view';
-import MessageForEmptyListView from '../view/empty-list.js';
+import EditFormView from '../view/edit-form-view.js';
 
+const Mode = {
+  DEFAULT: 'DEFAULT',
+  EDITING: 'EDITING',
+};
 export default class PointPresenter {
-
+  #pointComponent = null;
   #pointListContainer = null;
-  #pointModel = null;
-  #pointListComponent = new WaypointListedView();
-  #points = [];
-  #pointShortingComponent = new SortingView();
-  #emptyListPoint = new MessageForEmptyListView();
+  #pointEditComponent = null;
+  #handleDataChange = null;
+  #handleModeChange = null;
 
-  constructor({pointListContainer, pointModel}) {
+  #point = null;
+  #mode = Mode.DEFAULT;
+
+  constructor({pointListContainer, onDataChange, onModeChange}){
     this.#pointListContainer = pointListContainer;
-    this.#pointModel = pointModel;
-
+    this.#handleDataChange = onDataChange;
+    this.#handleModeChange = onModeChange;
   }
 
+  init(point) {
+    this.#point = point;
 
-  init() {
+    const prevPointComponent = this.#pointComponent;
+    const prevPointEditComponent = this.#pointEditComponent;
 
-    this.#points = [...this.#pointModel.points];
-
-    this.#renderBoard();
-  }
-
-  #renderPoint(point) {
-
-    const escKeyDownHandler = (evt) => {
-      if (evt.key === 'Escape' || evt.key === 'Esc') {
-        evt.preventDefault();
-        replaceFormToCard().call(this);
-        document.removeEventListener('keydown', escKeyDownHandler);
-      }
-    };
-
-    /*  pointComponent.element.querySelector('.event__rollup-btn').addEventListener('click', () => {
-      replaceCardToForm();
-      document.addEventListener('keydown', escKeyDownHandler);
+    this.#pointComponent = new PointView({
+      point: this.#point,
+      onEditClick: this.#handleEditClick,
+      onFavoriteClick: this.#handleFavoriteClick,
     });
-    pointEditComponent.element.addEventListener('submit', (evt) => {
+
+    this.#pointEditComponent = new EditFormView({
+      point: this.#point,
+      onFormSubmit: this.#handleFormSubmit,
+    });
+
+    if(prevPointComponent === null || prevPointEditComponent === null) {
+      render(this.#pointComponent, this.#pointListContainer);
+      return;
+    }
+
+    if(this.#mode === Mode.DEFAULT) {
+      replace(this.#pointComponent, prevPointComponent);
+    }
+    if(this.#mode === Mode.EDITING) {
+      replace(this.#pointEditComponent, prevPointEditComponent);
+    }
+
+    remove(prevPointComponent);
+    remove(prevPointEditComponent);
+  }
+
+  resetView() {
+    if(this.#mode !== Mode.DEFAULT){
+      this.#replaceFormToCard();
+    }
+  }
+
+  destroy(){
+    remove(this.#pointComponent);
+    remove(this.#pointEditComponent);
+  }
+
+  #replaceCardToForm() {
+    replace(this.#pointEditComponent, this.#pointComponent);
+    document.addEventListener('keydown', this.#escKeyDownHandler);
+    this.#handleModeChange();
+    this.#mode = Mode.EDITING;
+  }
+
+  #replaceFormToCard() {
+    replace(this.#pointComponent, this.#pointEditComponent);
+    document.removeEventListener('keydown', this.#escKeyDownHandler);
+    this.#mode = Mode.DEFAULT;
+  }
+
+  #escKeyDownHandler = (evt) => {
+    if (evt.key === 'Escape' || evt.key === 'Esc') {
       evt.preventDefault();
-      replaceFormToCard();
-      document.removeEventListener('keydown', escKeyDownHandler);
-    });
-    pointEditComponent.element.querySelector('.event__rollup-btn').addEventListener('click', () => {
-      replaceFormToCard();
-      document.removeEventListener('keydown', escKeyDownHandler);
-    });
-*/
-    const pointComponent = new PointView({
-      point,
-      onEditClick: () => {
-        replaceCardToForm.call(this);
-        document.addEventListener('keydown', escKeyDownHandler);
-      }
-    });
-    const pointEditComponent = new EditFormView({
-      BLANK_POINT,
-      onFormSubmit: () => {
-        replaceFormToCard.call(this);
-        document.removeEventListener('keydown', escKeyDownHandler);
-      }});
-
-    function replaceCardToForm() {
-      this.#pointListComponent.element.replaceChild(pointEditComponent.element, pointComponent.element);
+      this.#replaceFormToCard();
     }
-    function replaceFormToCard() {
-      this.#pointListComponent.element.replaceChild(pointComponent.element, pointEditComponent.element);
-    }
-    //#renderShort() {}
-    render(this.#pointShortingComponent, this.#pointListContainer);
-    render(this.#pointListComponent, this.#pointListContainer);
-    render(pointComponent, this.#pointListComponent.element);
+  };
 
-  }
+  #handleEditClick = () => {
+    this.#replaceCardToForm();
+  };
 
-  #renderBoard() {
-    if(this.#points.length){
-      for (let i = 0; i < this.#points.length; i++) {
-        this.#renderPoint(this.#points[i]);
-      }
-    } else {
-      render(this.#emptyListPoint, this.#pointListContainer);
-    }
-  }
+  #handleFavoriteClick = () => {
+    this.#handleDataChange({...this.#point, isFavorite: !this.#point.isFavorite});
+  };
 
+  #handleFormSubmit = (point) => {
+    this.#handleDataChange(point);
+    this.#replaceFormToCard();
+  };
 }

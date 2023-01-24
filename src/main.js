@@ -1,7 +1,7 @@
 //import {render} from './framework/render.js';
 import FiltersPresenter from './presenter/filters-point-presenter.js';
 import PointModel from './model/point-model.js';
-import PointPresenter from './presenter/point-presenter.js';
+import BoardPresenter from './presenter/board-presenter.js';
 
 const siteMainElement = document.querySelector('.page-main');
 const siteMainTripEvents = siteMainElement.querySelector('.trip-events');
@@ -12,7 +12,7 @@ const siteHeaderFilterElement = siteHeaderElement.querySelector('.trip-controls_
 
 const pointModel = new PointModel();
 
-const pointPresenter = new PointPresenter({
+const pointPresenter = new BoardPresenter({
   pointListContainer: siteMainTripEvents,
   pointModel
 });

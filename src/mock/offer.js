@@ -6,12 +6,22 @@ const OFFER = [
   },
   {
     id: 1,
+    title: 'Taxi',
+    price: 150
+  },
+  {
+    id: 1,
     title: 'Taxi luxe',
     price: 150
   },
   {
     id: 2,
     title: 'bus1',
+    price: 50
+  },
+  {
+    id: 2,
+    title: 'bus3',
     price: 50
   },
   {
@@ -26,6 +36,11 @@ const OFFER = [
   },
   {
     id: 3,
+    title: 'train3',
+    price: 60
+  },
+  {
+    id: 3,
     title: 'train2',
     price: 65
   },
@@ -36,7 +51,17 @@ const OFFER = [
   },
   {
     id: 4,
+    title: 'ship3',
+    price: 20
+  },
+  {
+    id: 4,
     title: 'ship2',
+    price: 40
+  },
+  {
+    id: 4,
+    title: 'ship4',
     price: 40
   },
   {
@@ -50,8 +75,18 @@ const OFFER = [
     price: 60
   },
   {
+    id: 5,
+    title: 'drive3',
+    price: 60
+  },
+  {
     id: 6,
     title: 'flight1',
+    price: 70
+  },
+  {
+    id: 6,
+    title: 'flight3',
     price: 70
   },
   {
@@ -70,8 +105,18 @@ const OFFER = [
     price: 15
   },
   {
+    id: 7,
+    title: 'check-in3',
+    price: 15
+  },
+  {
     id: 8,
     title: 'sightseeing1',
+    price: 30
+  },
+  {
+    id: 8,
+    title: 'sightseeing3',
     price: 30
   },
   {
@@ -82,6 +127,11 @@ const OFFER = [
   {
     id: 9,
     title: 'restaurant1',
+    price: 80
+  },
+  {
+    id: 9,
+    title: 'restaurant3',
     price: 80
   },
   {
