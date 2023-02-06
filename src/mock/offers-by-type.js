@@ -47,5 +47,9 @@ function returnOffers(type){
   const objectType = offersByType.filter((item) => item.type === type);
   return objectType[0].offers;
 }
-
-export {offersByType, returnOffers};
+function returnThisOffer(offer) {
+  const offerCurrentArray = offersByType.map(({offers}) => offers.filter((item) => item.title.toLowerCase() === offer.toLowerCase()));
+  const offerCurrent = offerCurrentArray.filter((item) => item.length);
+  return offerCurrent[0][0];
+}
+export {offersByType, returnOffers, returnThisOffer};
