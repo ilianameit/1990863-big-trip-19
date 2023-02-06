@@ -20,7 +20,7 @@ const points = [
     isFavorite:  Boolean(getRandomPositiveInteger(0, 1)),
     //offers: getRandomArrayElement(offersByType[getRandomPositiveInteger(0, offersByType.length - 1)].offers),
     type: type1,
-    offers: [getRandomArrayElement(returnOffers(type1)),getRandomArrayElement(returnOffers(type1))],
+    offers: [],
     img: destanition[getRandomPositiveInteger(0, destanition.length - 1)].pictures[0].src,
 
   },
