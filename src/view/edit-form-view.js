@@ -5,6 +5,7 @@ import {destanition, returnDestanition, returnAllDestanitions} from '../mock/des
 import {humanizeDate, TIME_FORMAT, EDIT_DATE_FORMAT} from '../utils/point.js';
 import { returnOffers, returnThisOffer} from '../mock/offers-by-type.js';
 
+
 const typeRandom = getRandomArrayElement(OFFERTYPE);
 const cityRandom = getRandomArrayElement(CITYS);
 const destinationRandom = getRandomArrayElement(destanition);
@@ -65,7 +66,6 @@ function createOffers(type, offers) {
 
 function createDestinationTemplate(destination) {
   const currentDestinition = returnDestanition(destination);
-  console.log(currentDestinition);
   const photosTape = currentDestinition.pictures.length === 0 ? '' : `
     <div class="event__photos-container">
       <div class="event__photos-tape">
@@ -178,6 +178,12 @@ export default class EditFormView extends AbstractStatefulView {
 
   get template() {
     return createEditFormTemplate(this._state);
+  }
+
+  reset(point){
+    this.updateElement(
+      EditFormView.parsePointToState(point),
+    );
   }
 
   _restoreHandlers() {
