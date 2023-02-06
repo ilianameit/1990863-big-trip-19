@@ -32,7 +32,6 @@ export default class BoardPresenter {
   init() {
 
     this.#points = [...this.#pointModel.points].sort(sortDayUp);
-    console.log(this.#points);
     this.#sourcedBoardPoints = [...this.#pointModel.points];
     this.#sortedTimePoint = [...this.#pointModel.points];
     this.#sortedPricePoint = [...this.#pointModel.points];

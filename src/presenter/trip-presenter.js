@@ -11,7 +11,6 @@ export default class TripPresenter {
   constructor({tripContainer}, points) {
     this.#tripContainer = tripContainer;
     this.#points = [...points.points].sort(sortDayUp);
-    console.log(this.#points);
     this.#tripComponent = new TripView({point: this.#points});
   }
 
