@@ -2,7 +2,7 @@ import AbstractStatefulView from '../framework/view/abstract-stateful-view.js';
 import {getRandomArrayElement, getRandomPositiveInteger, upperFirstCase} from '../utils/common.js';
 import {OFFERTYPE, CITYS} from '../const.js';
 import {destanition, returnDestanition, returnAllDestanitions} from '../mock/destanition.js';
-import {humanizeDate, TIME_FORMAT, EDIT_DATE_FORMAT} from '../utils/point.js';
+import {humanizeDate, Format} from '../utils/point.js';
 import { returnOffers, returnThisOffer} from '../mock/offers-by-type.js';
 import flatpickr from 'flatpickr';
 
@@ -124,10 +124,10 @@ function createEditFormTemplate(data) {
 
       <div class="event__field-group  event__field-group--time">
         <label class="visually-hidden" for="event-start-time">From</label>
-        <input class="event__input  event__input--time" id="event-start-time" type="text" name="event-start-time" value="${humanizeDate(dateFrom, EDIT_DATE_FORMAT)} ${humanizeDate(dateFrom, TIME_FORMAT)}">
+        <input class="event__input  event__input--time" id="event-start-time" type="text" name="event-start-time" value="${humanizeDate(dateFrom, Format.EDIT_DATE)} ${humanizeDate(dateFrom, Format.TIME)}">
         &mdash;
         <label class="visually-hidden" for="event-end-time">To</label>
-        <input class="event__input  event__input--time" id="event-end-time" type="text" name="event-end-time" value="${humanizeDate(dateTo, EDIT_DATE_FORMAT)} ${humanizeDate(dateTo, TIME_FORMAT)}">
+        <input class="event__input  event__input--time" id="event-end-time" type="text" name="event-end-time" value="${humanizeDate(dateTo, Format.EDIT_DATE)} ${humanizeDate(dateTo, Format.TIME)}">
       </div>
 
       <div class="event__field-group  event__field-group--price">
