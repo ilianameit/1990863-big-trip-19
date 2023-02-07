@@ -4,7 +4,9 @@ import {OFFERTYPE, CITYS} from '../const.js';
 import {destanition, returnDestanition, returnAllDestanitions} from '../mock/destanition.js';
 import {humanizeDate, TIME_FORMAT, EDIT_DATE_FORMAT} from '../utils/point.js';
 import { returnOffers, returnThisOffer} from '../mock/offers-by-type.js';
+import flatpickr from 'flatpickr';
 
+import 'flatpickr/dist/flatpickr.min.css';
 
 const typeRandom = getRandomArrayElement(OFFERTYPE);
 const cityRandom = getRandomArrayElement(CITYS);
@@ -121,11 +123,11 @@ function createEditFormTemplate(data) {
       </div>
 
       <div class="event__field-group  event__field-group--time">
-        <label class="visually-hidden" for="event-start-time-1">From</label>
-        <input class="event__input  event__input--time" id="event-start-time-1" type="text" name="event-start-time" value="${humanizeDate(dateFrom, EDIT_DATE_FORMAT)} ${humanizeDate(dateFrom, TIME_FORMAT)}">
+        <label class="visually-hidden" for="event-start-time">From</label>
+        <input class="event__input  event__input--time" id="event-start-time" type="text" name="event-start-time" value="${humanizeDate(dateFrom, EDIT_DATE_FORMAT)} ${humanizeDate(dateFrom, TIME_FORMAT)}">
         &mdash;
-        <label class="visually-hidden" for="event-end-time-1">To</label>
-        <input class="event__input  event__input--time" id="event-end-time-1" type="text" name="event-end-time" value="${humanizeDate(dateTo, EDIT_DATE_FORMAT)} ${humanizeDate(dateTo, TIME_FORMAT)}">
+        <label class="visually-hidden" for="event-end-time">To</label>
+        <input class="event__input  event__input--time" id="event-end-time" type="text" name="event-end-time" value="${humanizeDate(dateTo, EDIT_DATE_FORMAT)} ${humanizeDate(dateTo, TIME_FORMAT)}">
       </div>
 
       <div class="event__field-group  event__field-group--price">
@@ -164,6 +166,7 @@ export default class EditFormView extends AbstractStatefulView {
   #handleStopEditClick = null;
   #handleDeleteClick = null;
   #handleCloseClick = null;
+  #datepicker = { from: null, to: null };
   constructor({point = BLANK_POINT, onFormSubmit, onDeleteClick, onCloseClick}){
     super();
     //this.#point = point;
@@ -178,6 +181,17 @@ export default class EditFormView extends AbstractStatefulView {
 
   get template() {
     return createEditFormTemplate(this._state);
+  }
+
+  removeElement() {
+    super.removeElement();
+
+    for (const key in this.#datepicker) {
+      if (this.#datepicker[key]) {
+        this.#datepicker[key].destroy();
+        this.#datepicker[key] = null;
+      }
+    }
   }
 
   reset(point){
@@ -201,7 +215,46 @@ export default class EditFormView extends AbstractStatefulView {
       .addEventListener('change', this.#destinationChangeHandler);
     this.element.querySelector('.event__available-offers')
       .addEventListener('change', this.#offerChangeHandler);
+    this.#setDatepicker();
 
+  }
+
+  #dateFromChangeHandler = ([userDate]) => {
+    this.updateElement({
+      dateFrom: userDate,
+    });
+  };
+
+  #dateToChangeHandler = ([userDate]) => {
+    this.updateElement({
+      dateTo: userDate,
+    });
+  };
+
+  #setDatepicker() {
+    this.#datepicker.from = flatpickr(
+      this.element.querySelector('#event-start-time'),
+      {
+        dateFormat: 'd/m/y H:i',
+        enableTime: true,
+        // eslint-disable-next-line camelcase
+        time_24hr: true,
+        defaultDate: this._state.dateFrom,
+        onChange: this.#dateFromChangeHandler,
+      },
+    );
+    this.#datepicker.to = flatpickr(
+      this.element.querySelector('#event-end-time'),
+      {
+        dateFormat: 'd/m/y H:i',
+        enableTime: true,
+        // eslint-disable-next-line camelcase
+        time_24hr: true,
+        defaultDate: this._state.dateTo,
+        minDate: this._state.dateFrom,
+        onChange: this.#dateToChangeHandler,
+      },
+    );
   }
 
   #formSubmitHandler = (evt) => {
