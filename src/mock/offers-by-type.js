@@ -52,4 +52,5 @@ function returnThisOffer(offer) {
   const offerCurrent = offerCurrentArray.filter((item) => item.length);
   return offerCurrent ? offerCurrent[0][0] : '' ;
 }
+
 export {offersByType, returnOffers, returnThisOffer};
