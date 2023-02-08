@@ -1,5 +1,5 @@
 import AbstractView from '../framework/view/abstract-view.js';
-import {humanizeDate, MONTH_FORMAT, DAY_FORMAT} from '../utils/point.js';
+import {humanizeDate, Format} from '../utils/point.js';
 
 function createCities(values) {
   const cities = new Set();
@@ -23,10 +23,10 @@ function calculateTotalPrice(point) {
   return price;
 }
 function createDateInfo(values) {
-  const dateFrom = humanizeDate(values[0].dateFrom, DAY_FORMAT);
-  const monthFrom = humanizeDate(values[0].dateFrom, MONTH_FORMAT);
-  const monthTo = humanizeDate(values[values.length - 1].dateTo, MONTH_FORMAT);
-  const dateTo = humanizeDate(values[values.length - 1].dateTo, DAY_FORMAT);
+  const dateFrom = humanizeDate(values[0].dateFrom, Format.DAY);
+  const monthFrom = humanizeDate(values[0].dateFrom, Format.MONTH);
+  const monthTo = humanizeDate(values[values.length - 1].dateTo, Format.MONTH);
+  const dateTo = humanizeDate(values[values.length - 1].dateTo, Format.DAY);
   if(monthFrom === monthTo) {
     return `${monthFrom} ${dateFrom}&nbsp;&mdash;&nbsp;${dateTo}`;
   }

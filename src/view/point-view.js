@@ -1,7 +1,7 @@
 import AbstractView from '../framework/view/abstract-view.js';
 
 import {upperFirstCase} from '../utils/common.js';
-import {differentDate, humanizeDate, DATE_FORMAT, TIME_FORMAT} from '../utils/point.js';
+import {differentDate, humanizeDate, Format} from '../utils/point.js';
 import {returnOffers} from '../mock/offers-by-type.js';
 
 
@@ -29,9 +29,9 @@ function createOffers(type, offers) {
 }
 function createPointTemplate(point) {
   const {basePrice, dateFrom, dateTo, destination, isFavorite, type, img, offers} = point;
-  const dateFromFormatted = humanizeDate(dateFrom, DATE_FORMAT);
-  const timeFrom = humanizeDate(dateFrom, TIME_FORMAT);
-  const timeTo = humanizeDate(dateTo, TIME_FORMAT);
+  const dateFromFormatted = humanizeDate(dateFrom, Format.DATE);
+  const timeFrom = humanizeDate(dateFrom, Format.TIME);
+  const timeTo = humanizeDate(dateTo, Format.TIME);
   const showOffers = createOffers(type, offers);
   return(
     `<li class="trip-events__item">

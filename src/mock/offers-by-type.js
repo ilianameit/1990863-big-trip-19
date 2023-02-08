@@ -50,6 +50,6 @@ function returnOffers(type){
 function returnThisOffer(offer) {
   const offerCurrentArray = offersByType.map(({offers}) => offers.filter((item) => item.title.toLowerCase() === offer.toLowerCase()));
   const offerCurrent = offerCurrentArray.filter((item) => item.length);
-  return offerCurrent[0][0];
+  return offerCurrent ? offerCurrent[0][0] : '' ;
 }
 export {offersByType, returnOffers, returnThisOffer};
