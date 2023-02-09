@@ -28,6 +28,9 @@ export default class BoardPresenter {
 
   }
 
+  get points() {
+    return this.#pointModel.points;
+  }
 
   init() {
 
