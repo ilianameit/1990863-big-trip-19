@@ -102,8 +102,8 @@ export default class PointPresenter {
 
   #handleFormSubmit = (update) => {
     const isPatchUpdate =
-    isDatesEqual(this.#point.dateFrom, update.dateFrom) &&
-    calculateTotalPrice(this.#point) === calculateTotalPrice(update);
+    isDatesEqual(this.#point.dateFrom, update.dateFrom);
+    //&& calculateTotalPrice(this.#point) === calculateTotalPrice(update)
 
     this.#handleDataChange(
       UserAction.UPDATE_POINT,

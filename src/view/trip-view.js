@@ -1,5 +1,5 @@
 import AbstractView from '../framework/view/abstract-view.js';
-import {humanizeDate, Format} from '../utils/point.js';
+import {humanizeDate, Format, calculateTotalPrice} from '../utils/point.js';
 
 function createCities(values) {
   const cities = new Set();
@@ -14,14 +14,7 @@ function createCities(values) {
     }
   ).join('');
 }
-function calculateTotalPrice(point) {
-  const initialValue = 0;
-  const price = point.reduce(
-    (accumulatorPrice, currentPrice) =>
-      accumulatorPrice + currentPrice.basePrice, initialValue
-  );
-  return price;
-}
+
 function createDateInfo(values) {
   const dateFrom = humanizeDate(values[0].dateFrom, Format.DAY);
   const monthFrom = humanizeDate(values[0].dateFrom, Format.MONTH);

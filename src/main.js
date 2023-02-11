@@ -18,12 +18,13 @@ const filterModel = new FilterModel();
 
 const boardPresenter = new BoardPresenter({
   pointListContainer: siteMainTripEvents,
-  pointModel
+  pointModel,
+  filterModel,
 });
 const tripPresenter = new TripPresenter({tripContainer: siteTrip}, pointModel);
 tripPresenter.init();
 
-const filtersPresenter = new FiltersPresenter({filterContainer: filterContainerElement}, filterModel, pointModel);
+const filtersPresenter = new FiltersPresenter({filterContainer: filterContainerElement, filterModel, pointModel});
 filtersPresenter.init();
 boardPresenter.init();
 

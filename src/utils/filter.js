@@ -7,10 +7,10 @@ dayjs.extend(isSameOrBefore);
 dayjs.extend(isSameOrAfter);
 
 const filter = {
-  [FilterType.everything]: (points) => points.filter((point) => point),
-  [FilterType.future]: (points) => points.filter((point) => dayjs(point.dateFrom).isAfter(dayjs())),
-  [FilterType.present]: (points) => points.filter((point) => dayjs(point.dateFrom).isSameOrBefore(dayjs()) && dayjs(point.dateTo).isSameOrAfter(dayjs())),
-  [FilterType.past]: (points) => points.filter((point) => dayjs(point.dateTo).isBefore(dayjs())),
+  [FilterType.EVERYTHING]: (points) => points.filter((point) => point),
+  [FilterType.FUTURE]: (points) => points.filter((point) => dayjs(point.dateFrom).isAfter(dayjs())),
+  [FilterType.PRESENT]: (points) => points.filter((point) => dayjs(point.dateFrom).isSameOrBefore(dayjs()) && dayjs(point.dateTo).isSameOrAfter(dayjs())),
+  [FilterType.PAST]: (points) => points.filter((point) => dayjs(point.dateTo).isBefore(dayjs())),
 
 };
 export {filter};

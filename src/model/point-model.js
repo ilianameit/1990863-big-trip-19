@@ -11,7 +11,7 @@ export default class PointModel extends Observable{
     return this.#points;
   }
 
-  updateTask(updateType, update) {
+  updatePoint(updateType, update) {
     const index = this.#points.findIndex((task) => task.id === update.id);
 
     if (index === -1) {

@@ -4,40 +4,49 @@ import {remove, render, RenderPosition} from '../framework/render.js';
 import SortingView from '../view/sorting-view';
 import MessageForEmptyListView from '../view/empty-list.js';
 import PointPresenter from './point-presenter.js';
+import { filter } from '../utils/filter.js';
 
-import {SortType, UpdateType, UserAction} from '../const.js';
+import {SortType, UpdateType, UserAction, FilterType} from '../const.js';
 import {sortDayUp, sortTime, sortPrice} from '../utils/point.js';
 
 export default class BoardPresenter {
 
   #pointListContainer = null;
   #pointModel = null;
+  #filterModel = null;
   #pointListComponent = new WaypointListedView();
 
   #sortComponent = null;
   #emptyListPoint = null;
   #pointsPresenter = new Map();
   #currentSortType = SortType.DAY;
+  #filterType = FilterType.EVERYTHING;
 
 
-  constructor({pointListContainer, pointModel}) {
+  constructor({pointListContainer, pointModel, filterModel}) {
     this.#pointListContainer = pointListContainer;
     this.#pointModel = pointModel;
+    this.#filterModel = filterModel;
 
     this.#pointModel.addObserver(this.#handleModelEvent);
+    this.#filterModel.addObserver(this.#handleModelEvent);
   }
 
   get points() {
+    this.#filterType = this.#filterModel.filter;
+    const points = this.#pointModel.points;
+    const filteredPoints = filter[this.#filterType](points);
+
     switch (this.#currentSortType) {
-      case SortType.TIME:
-        return [...this.#pointModel.points].sort(sortTime);
-      case SortType.PRICE:
-        return [...this.#pointModel.points].sort(sortPrice);
       case SortType.DAY:
-        return [...this.#pointModel.points].sort(sortDayUp);
+        return filteredPoints.sort(sortDayUp);
+      case SortType.TIME:
+        return filteredPoints.sort(sortTime);
+      case SortType.PRICE:
+        return filteredPoints.sort(sortPrice);
     }
 
-    return [...this.#pointModel.points].sort(sortDayUp);
+    return filteredPoints;
   }
 
   init() {
