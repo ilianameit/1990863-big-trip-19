@@ -19,7 +19,7 @@ function createNoTaskTemplate(filterType) {
     </p>`
   );
 }
-export default class MessageForEmptyListView extends AbstractView{
+export default class NoPointView extends AbstractView{
   #filterType = null;
 
   constructor({filterType}) {

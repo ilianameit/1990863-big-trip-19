@@ -2,7 +2,7 @@
 import WaypointListedView from '../view/waypoint-listed-view.js';
 import {remove, render, RenderPosition} from '../framework/render.js';
 import SortingView from '../view/sorting-view';
-import MessageForEmptyListView from '../view/empty-list.js';
+import NoPointView from '../view/no-point-view.js';
 import PointPresenter from './point-presenter.js';
 import { filter } from '../utils/filter.js';
 
@@ -17,8 +17,8 @@ export default class BoardPresenter {
   #pointListComponent = new WaypointListedView();
 
   #sortComponent = null;
-  #emptyListPoint = null;
   #pointsPresenter = new Map();
+  #noPointComponent = null;
   #currentSortType = SortType.DAY;
   #filterType = FilterType.EVERYTHING;
 
@@ -113,8 +113,8 @@ export default class BoardPresenter {
   }
 
   #renderNoPoints(){
-    this.#emptyListPoint = new MessageForEmptyListView();
-    render(this.#emptyListPoint, this.#pointListContainer, RenderPosition.AFTERBEGIN);
+    this.#noPointComponent = new NoPointView({filterType: this.#filterType});
+    render(this.#noPointComponent, this.#pointListContainer, RenderPosition.AFTERBEGIN);
   }
 
   #clearBoard({ resetSortType = false } = {}) {
@@ -122,12 +122,14 @@ export default class BoardPresenter {
     this.#pointsPresenter.clear();
 
     remove(this.#sortComponent);
-    if(this.#emptyListPoint){
-      remove(this.#emptyListPoint);
+
+    if(this.#noPointComponent){
+      remove(this.#noPointComponent);
     }
     if (resetSortType) {
       this.#currentSortType = SortType.DAY;
     }
+
   }
 
   #renderPoints(points) {
