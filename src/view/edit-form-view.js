@@ -162,8 +162,8 @@ function createEditFormTemplate(data) {
 export default class EditFormView extends AbstractStatefulView {
 
   #point = null;
-  #handleFormSubmit = null;
   #handleStopEditClick = null;
+  #handleFormSubmit = null;
   #handleDeleteClick = null;
   #handleCloseClick = null;
   #datepicker = { from: null, to: null };
@@ -259,12 +259,12 @@ export default class EditFormView extends AbstractStatefulView {
 
   #formSubmitHandler = (evt) => {
     evt.preventDefault();
-    //this.#handleFormSubmit(this.#point);
     this.#handleFormSubmit(EditFormView.parseStateToPoint(this._state));
   };
 
-  #deleteClickHandler = () => {
-    this.#handleDeleteClick();
+  #deleteClickHandler = (evt) => {
+    evt.preventDefault();
+    this.#handleDeleteClick(EditFormView.parseStateToPoint(this._state));
   };
 
   #closeClickHandler = () => {
@@ -312,10 +312,7 @@ export default class EditFormView extends AbstractStatefulView {
   }
 
   static parseStateToPoint(state) {
-    return {
-      ...state,
-      //totalPrice: calculateTotalPrice(state),
-    };
+    return {...state};
   }
 }
 

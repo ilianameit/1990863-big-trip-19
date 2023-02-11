@@ -54,4 +54,16 @@ function sortPrice(pointA, pointB) {
   return weight;
 }
 
-export {differentDate, humanizeDate, Format, sortDayUp, sortTime, sortPrice};
+function calculateTotalPrice(point) {
+  const initialValue = 0;
+  const price = point.reduce(
+    (accumulatorPrice, currentPrice) =>
+      accumulatorPrice + currentPrice.basePrice, initialValue
+  );
+  return price;
+}
+function isDatesEqual(dateA, dateB) {
+  return (dateA === null && dateB === null) || dayjs(dateA).isSame(dateB, 'D');
+}
+
+export {differentDate, humanizeDate, Format, sortDayUp, sortTime, sortPrice, calculateTotalPrice, isDatesEqual};

@@ -2,6 +2,7 @@ import {render, replace, remove} from '../framework/render.js';
 import PointView from '../view/point-view.js';
 import EditFormView from '../view/edit-form-view.js';
 import {UserAction, UpdateType} from '../const.js';
+import { isDatesEqual, calculateTotalPrice } from '../utils/point.js';
 
 const Mode = {
   DEFAULT: 'DEFAULT',
@@ -99,11 +100,15 @@ export default class PointPresenter {
     this.#handleDataChange({...this.#point, isFavorite: !this.#point.isFavorite});
   };
 
-  #handleFormSubmit = (point) => {
+  #handleFormSubmit = (update) => {
+    const isPatchUpdate =
+    isDatesEqual(this.#point.dateFrom, update.dateFrom) &&
+    calculateTotalPrice(this.#point) === calculateTotalPrice(update);
+
     this.#handleDataChange(
       UserAction.UPDATE_POINT,
-      UpdateType.MINOR,
-      point,
+      isPatchUpdate ? UpdateType.PATCH : UpdateType.MINOR,
+      update,
     );
 
     this.#replaceFormToCard();
