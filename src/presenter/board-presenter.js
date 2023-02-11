@@ -1,11 +1,11 @@
 
 import WaypointListedView from '../view/waypoint-listed-view.js';
-import {render, RenderPosition} from '../framework/render.js';
+import {remove, render, RenderPosition} from '../framework/render.js';
 import SortingView from '../view/sorting-view';
 import MessageForEmptyListView from '../view/empty-list.js';
 import PointPresenter from './point-presenter.js';
 
-import {SortType} from '../const.js';
+import {SortType, UpdateType, UserAction} from '../const.js';
 import {sortDayUp, sortTime, sortPrice} from '../utils/point.js';
 
 export default class BoardPresenter {
@@ -14,8 +14,8 @@ export default class BoardPresenter {
   #pointModel = null;
   #pointListComponent = new WaypointListedView();
 
-  #pointShortingComponent = null;
-  #emptyListPoint = new MessageForEmptyListView();
+  #sortComponent = null;
+  #emptyListPoint = null;
   #pointsPresenter = new Map();
   #currentSortType = SortType.DAY;
 
@@ -47,19 +47,33 @@ export default class BoardPresenter {
   }
 
   #handleViewAction = (actionType, updateType, update) => {
-    console.log(actionType, updateType, update);
-    // Здесь будем вызывать обновление модели.
-    // actionType - действие пользователя, нужно чтобы понять, какой метод модели вызвать
-    // updateType - тип изменений, нужно чтобы понять, что после нужно обновить
-    // update - обновленные данные
+    switch (actionType) {
+      case UserAction.UPDATE_POINT:
+        this.#pointModel.updatePoint(updateType, update);
+        break;
+      case UserAction.ADD_POINT:
+        this.#pointModel.addPoint(updateType, update);
+        break;
+      case UserAction.DELETE_POINT:
+        this.#pointModel.deletePoint(updateType, update);
+        break;
+    }
   };
 
   #handleModelEvent = (updateType, data) => {
-    console.log(updateType, data);
-    // В зависимости от типа изменений решаем, что делать:
-    // - обновить часть списка (например, когда поменялось описание)
-    // - обновить список (например, когда задача ушла в архив)
-    // - обновить всю доску (например, при переключении фильтра)
+    switch (updateType) {
+      case UpdateType.PATCH:
+        this.#pointsPresenter.get(data.id).init(data);
+        break;
+      case UpdateType.MINOR:
+        this.#clearBoard();
+        this.#renderBoard();
+        break;
+      case UpdateType.MAJOR:
+        this.#clearBoard({ resetSortType: true });
+        this.#renderBoard();
+        break;
+    }
   };
 
   #handleSortTypeChange = (sortType) => {
@@ -67,15 +81,15 @@ export default class BoardPresenter {
       return;
     }
     this.#currentSortType = sortType;
-    this.#clearPointList();
+    this.#clearBoard();
     this.#renderPointList();
   };
 
   #renderSort() {
-    this.#pointShortingComponent = new SortingView({
+    this.#sortComponent = new SortingView({
       onSortTypeChange: this.#handleSortTypeChange
     });
-    render(this.#pointShortingComponent, this.#pointListContainer, RenderPosition.AFTERBEGIN);
+    render(this.#sortComponent, this.#pointListContainer, RenderPosition.AFTERBEGIN);
   }
 
   #renderPoint(point) {
@@ -89,12 +103,21 @@ export default class BoardPresenter {
   }
 
   #renderNoPoints(){
+    this.#emptyListPoint = new MessageForEmptyListView();
     render(this.#emptyListPoint, this.#pointListContainer, RenderPosition.AFTERBEGIN);
   }
 
-  #clearPointList() {
+  #clearBoard({ resetSortType = false } = {}) {
     this.#pointsPresenter.forEach((presenter) => presenter.destroy());
     this.#pointsPresenter.clear();
+
+    remove(this.#sortComponent);
+    if(this.#emptyListPoint){
+      remove(this.#emptyListPoint);
+    }
+    if (resetSortType) {
+      this.#currentSortType = SortType.DAY;
+    }
   }
 
   #renderPoints(points) {
@@ -112,13 +135,17 @@ export default class BoardPresenter {
 
   #renderBoard() {
     const points = this.points;
-    const pointsLength = this.points.length;
-    if(!pointsLength){
+    const pointsLength = points.length;
+    if(pointsLength === 0){
       this.#renderNoPoints();
       return;
     }
     this.#renderSort();
-    this.#renderPointList(points);
+
+
+    //this.#renderPointList(points);
+    render(this.#pointListComponent, this.#pointListContainer);
+    this.#renderPoints(points);
   }
 
 }
