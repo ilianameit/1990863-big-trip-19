@@ -83,7 +83,7 @@ const destanition = [
   },
 ];
 function returnDestanition(city){
-  const destanitionCity = destanition.filter((item) => item.name === city);
+  const destanitionCity = destanition.filter((item) => item.id === city || item.name === city);
   return destanitionCity[0];
 }
 function returnAllDestanitions() {
