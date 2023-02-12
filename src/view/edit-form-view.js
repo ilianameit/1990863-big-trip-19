@@ -1,27 +1,20 @@
 import AbstractStatefulView from '../framework/view/abstract-stateful-view.js';
-import {getRandomArrayElement, getRandomPositiveInteger, upperFirstCase} from '../utils/common.js';
+import { upperFirstCase} from '../utils/common.js';
 import {OFFERTYPE, CITYS} from '../const.js';
-import {destanition, returnDestanition, returnAllDestanitions} from '../mock/destanition.js';
+import { returnDestanition, returnAllDestanitions} from '../mock/destanition.js';
 import {humanizeDate, Format} from '../utils/point.js';
 import { returnOffers, returnThisOffer} from '../mock/offers-by-type.js';
 import flatpickr from 'flatpickr';
 
 import 'flatpickr/dist/flatpickr.min.css';
 
-const typeRandom = getRandomArrayElement(OFFERTYPE);
-const cityRandom = getRandomArrayElement(CITYS);
-const destinationRandom = getRandomArrayElement(destanition);
 const BLANK_POINT = {
-  basePrice: getRandomPositiveInteger(100, 110),
-  dateFrom: '2019-03-18T12:25:56.000',
-  dateTo: '2019-03-09T13:35:13.000',
-  destination: destinationRandom,
-  city: cityRandom,
-  cities: CITYS,
-  id: '0',
-  offers: returnOffers(typeRandom),
-  type: typeRandom,
-  img: destanition[getRandomPositiveInteger(0, destanition.length - 1)].pictures[0].src
+  basePrice: 0,
+  destination: CITYS[0],
+  city: '',
+  cities: CITYS[0],
+  offers: [],
+  type: OFFERTYPE[0],
 };
 
 function createOfferTypes() {
@@ -86,6 +79,7 @@ function createDestinationTemplate(destination) {
 
 
 function createEditFormTemplate(data) {
+  const isNewPoint = !('id' in data);
   const{basePrice, dateFrom, dateTo, destination, offers, type} = data;
   //console.log(basePrice, dateFrom, dateTo, destination, city, offers, type, cities);
   const offerTypes = createOfferTypes();
@@ -139,10 +133,15 @@ function createEditFormTemplate(data) {
       </div>
 
       <button class="event__save-btn  btn  btn--blue" type="submit">Save</button>
+      ${isNewPoint ? `
+      <button class="event__reset-btn" type="reset">Cancel</button>
+      ` :
+      `
       <button class="event__reset-btn" type="reset">Delete</button>
       <button class="event__rollup-btn" type="button">
         <span class="visually-hidden">Open event</span>
       </button>
+      `}
     </header>
     <section class="event__details">
       <section class="event__section  event__section--offers">
@@ -161,18 +160,19 @@ function createEditFormTemplate(data) {
 }
 export default class EditFormView extends AbstractStatefulView {
 
-  #point = null;
-  #handleStopEditClick = null;
   #handleFormSubmit = null;
   #handleDeleteClick = null;
   #handleCloseClick = null;
   #datepicker = { from: null, to: null };
-  constructor({point = BLANK_POINT, onFormSubmit, onDeleteClick, onCloseClick}){
+  constructor({point = {
+    ...BLANK_POINT,
+    dateFrom: new Date(),
+    dateTo: new Date(),
+  }, onFormSubmit, onDeleteClick, onCloseClick}){
     super();
     //this.#point = point;
     this._setState(EditFormView.parsePointToState(point));
     this.#handleFormSubmit = onFormSubmit;
-    this.#handleStopEditClick = onFormSubmit;
     this.#handleDeleteClick = onDeleteClick;
     this.#handleCloseClick = onCloseClick;
 
@@ -203,8 +203,10 @@ export default class EditFormView extends AbstractStatefulView {
   _restoreHandlers() {
     this.element
       .addEventListener('submit', this.#formSubmitHandler);
-    this.element.querySelector('.event__rollup-btn')
-      .addEventListener('click', this.#closeClickHandler);
+    const rollupButtonElement = this.element.querySelector('.event__rollup-btn');
+    if (rollupButtonElement) {
+      rollupButtonElement.addEventListener('click', this.#closeClickHandler);
+    }
     this.element.querySelector('.event__reset-btn')
       .addEventListener('click', this.#deleteClickHandler);
     this.element.querySelector('.event__type-group')

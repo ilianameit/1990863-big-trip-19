@@ -2,7 +2,7 @@ import {render, replace, remove} from '../framework/render.js';
 import PointView from '../view/point-view.js';
 import EditFormView from '../view/edit-form-view.js';
 import {UserAction, UpdateType} from '../const.js';
-import { isDatesEqual, calculateTotalPrice } from '../utils/point.js';
+import { isDatesEqual } from '../utils/point.js';
 
 const Mode = {
   DEFAULT: 'DEFAULT',
