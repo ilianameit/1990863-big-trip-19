@@ -1,6 +1,5 @@
 import {nanoid} from 'nanoid';
 import {getRandomArrayElement, getRandomPositiveInteger} from '../utils/common.js';
-import {returnOffers} from './offers-by-type.js';
 import {OFFERTYPE} from '../const.js';
 import {destanition} from './destanition.js';
 
