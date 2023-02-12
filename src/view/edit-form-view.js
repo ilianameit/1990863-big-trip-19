@@ -61,20 +61,20 @@ function createOffers(type, offers) {
 
 function createDestinationTemplate(destination) {
   const currentDestinition = returnDestanition(destination);
-  const photosTape = currentDestinition.pictures.length === 0 ? '' : `
+  const photosTape = currentDestinition === undefined ? '' : `
     <div class="event__photos-container">
       <div class="event__photos-tape">
         ${currentDestinition.pictures.map(({ src, description }) => `<img class="event__photo" src="${src}" alt="${description}">`)}
       </div>
     </div>
   `;
-  return (`
+  return (currentDestinition ? `
     <section class="event__section  event__section--destination">
       <h3 class="event__section-title  event__section-title--destination">Destination</h3>
       <p class="event__destination-description">${currentDestinition.description}</p>
       ${photosTape}
     </section>
-  `);
+  ` : '');
 }
 
 
@@ -291,7 +291,7 @@ export default class EditFormView extends AbstractStatefulView {
   #destinationChangeHandler = (evt) => {
     const destination = returnDestanition(evt.target.value);
     if (destination === undefined) {
-      this.reset(this._state);
+      this.updateElement({ destination: evt.target.value });
     } else {
       this.updateElement({ destination: destination.name });
     }
