@@ -49,4 +49,4 @@ tripPresenter.init();
 render(newPointButtonComponent, siteTrip);
 filtersPresenter.init();
 boardPresenter.init();
-
+pointModel.init();
