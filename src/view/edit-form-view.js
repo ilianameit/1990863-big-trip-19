@@ -1,5 +1,5 @@
 import AbstractStatefulView from '../framework/view/abstract-stateful-view.js';
-import { upperFirstCase} from '../utils/common.js';
+import { upperFirstCase} from '../utils/point.js';
 import {OFFERTYPE, CITYS} from '../const.js';
 import { returnDestanition, returnAllDestanitions} from '../mock/destanition.js';
 import {humanizeDate, Format} from '../utils/point.js';

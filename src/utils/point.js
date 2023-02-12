@@ -65,5 +65,7 @@ function calculateTotalPrice(point) {
 function isDatesEqual(dateA, dateB) {
   return (dateA === null && dateB === null) || dayjs(dateA).isSame(dateB, 'D');
 }
-
-export {differentDate, humanizeDate, Format, sortDayUp, sortTime, sortPrice, calculateTotalPrice, isDatesEqual};
+function upperFirstCase(word){
+  return (word[0].toUpperCase() + word.slice(1));
+}
+export {differentDate, humanizeDate, Format, sortDayUp, sortTime, sortPrice, calculateTotalPrice, isDatesEqual,upperFirstCase};

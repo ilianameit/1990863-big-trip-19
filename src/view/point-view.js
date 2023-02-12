@@ -1,5 +1,5 @@
 import AbstractView from '../framework/view/abstract-view.js';
-import {upperFirstCase} from '../utils/common.js';
+import {upperFirstCase} from '../utils/point.js';
 import {differentDate, humanizeDate, Format} from '../utils/point.js';
 import {returnOffers} from '../mock/offers-by-type.js';
 import {returnDestanition} from '../mock/destanition.js';

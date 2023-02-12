@@ -1,5 +1,4 @@
 import { OFFER } from './offer.js';
-//import {getRandomArrayElement} from '../utils/common.js';
 
 const returnArrayOffer = (keyId) => {
   const arrayOffer = OFFER.filter((item) => item.ids === keyId);
