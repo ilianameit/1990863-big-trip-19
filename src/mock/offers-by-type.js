@@ -2,7 +2,7 @@ import { OFFER } from './offer.js';
 //import {getRandomArrayElement} from '../utils/common.js';
 
 const returnArrayOffer = (keyId) => {
-  const arrayOffer = OFFER.filter((item) => item.id === keyId);
+  const arrayOffer = OFFER.filter((item) => item.ids === keyId);
   return arrayOffer;
 };
 const offersByType = [
@@ -43,13 +43,14 @@ const offersByType = [
     offers: returnArrayOffer(9),
   },
 ];
+
 function returnOffers(type){
   const objectType = offersByType.filter((item) => item.type === type);
   return objectType[0].offers;
 }
-function returnThisOffer(offer) {
-  const offerCurrentArray = offersByType.map(({offers}) => offers.filter((item) => item.title.toLowerCase() === offer.toLowerCase()));
-  const offerCurrent = offerCurrentArray.filter((item) => item.length);
-  return offerCurrent.length ? offerCurrent[0][0] : '';
+function returnThisOffer(type, offerId) {
+  const offersType = returnOffers(type);
+  const offerCurrentArray = offersType.filter((item) => item.id === offerId);
+  return offerCurrentArray.length ? offerCurrentArray[0] : '';
 }
 export {offersByType, returnOffers, returnThisOffer};

@@ -5,6 +5,10 @@ import BoardPresenter from './presenter/board-presenter.js';
 import TripPresenter from './presenter/trip-presenter.js';
 import FilterModel from './model/filter-model.js';
 import NewPointButtonView from './view/new-point-button-view.js';
+import PointsApiService from './points-api-service.js';
+
+const AUTHORIZATION = 'Basic tnTgn9Gsdgs0m6SFdKsdf';
+const END_POINT = 'https://19.ecmascript.pages.academy/big-trip-simple';
 
 const siteMainElement = document.querySelector('.page-main');
 const siteMainTripEvents = siteMainElement.querySelector('.trip-events');
@@ -14,7 +18,9 @@ const filterContainerElement = siteHeaderElement.querySelector('.trip-controls__
 
 //render(new FiltersView(), siteHeaderFilterElement);
 
-const pointModel = new PointModel();
+const pointModel = new PointModel({
+  pointsApiService: new PointsApiService(END_POINT, AUTHORIZATION)
+});
 const filterModel = new FilterModel();
 
 const boardPresenter = new BoardPresenter({

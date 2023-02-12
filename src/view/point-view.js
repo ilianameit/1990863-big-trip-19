@@ -1,5 +1,4 @@
 import AbstractView from '../framework/view/abstract-view.js';
-import he from 'he';
 import {upperFirstCase} from '../utils/common.js';
 import {differentDate, humanizeDate, Format} from '../utils/point.js';
 import {returnOffers} from '../mock/offers-by-type.js';
@@ -10,7 +9,7 @@ function createOffers(type, offers) {
 
   function isOfferChecked(currentOffers, offer) {
     if(currentOffers) {
-      return currentOffers.find( (currentOffer) => currentOffer.title.toLowerCase() === offer.title.toLowerCase()) ;
+      return currentOffers.find( (currentOffer) => currentOffer === offer.id) ;
     } return '';
   }
   if(offers) {
@@ -40,7 +39,7 @@ function createPointTemplate(point) {
                 <div class="event__type">
                   <img class="event__type-icon" width="42" height="42" src="${img}" alt="Event type icon">
                 </div>
-                <h3 class="event__title">${upperFirstCase(type)} ${he.encode(destination)}</h3>
+                <h3 class="event__title">${upperFirstCase(type)} ${destination}</h3>
                 <div class="event__schedule">
                   <p class="event__time">
                     <time class="event__start-time" datetime="${dateFrom}">${timeFrom}</time>
@@ -52,7 +51,7 @@ function createPointTemplate(point) {
                   </p>
                 </div>
                 <p class="event__price">
-                  &euro;&nbsp;<span class="event__price-value">${he.encode(basePrice)}</span>
+                  &euro;&nbsp;<span class="event__price-value">${basePrice}</span>
                 </p>
                 ${offers ? `
                   <h4 class="visually-hidden">Offers:</h4>

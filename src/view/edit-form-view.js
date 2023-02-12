@@ -3,7 +3,7 @@ import { upperFirstCase} from '../utils/common.js';
 import {OFFERTYPE, CITYS} from '../const.js';
 import { returnDestanition, returnAllDestanitions} from '../mock/destanition.js';
 import {humanizeDate, Format} from '../utils/point.js';
-import { returnOffers, returnThisOffer} from '../mock/offers-by-type.js';
+import { returnOffers} from '../mock/offers-by-type.js';
 import flatpickr from 'flatpickr';
 
 import 'flatpickr/dist/flatpickr.min.css';
@@ -40,7 +40,7 @@ function createOffers(type, offers) {
 
   function isOfferChecked(currentOffers, offer) {
     if(currentOffers) {
-      return currentOffers.find( (currentOffer) => currentOffer.title.toLowerCase() === offer.title.toLowerCase()) ;
+      return currentOffers.find( (currentOffer) => currentOffer === offer.id) ;
     } return '';
   }
 
@@ -48,7 +48,7 @@ function createOffers(type, offers) {
     (offer, index) =>
       `
       <div class="event__offer-selector">
-        <input class="event__offer-checkbox  visually-hidden" id="event-offer-luggage-${index}" type="checkbox" name="event-offer-luggage" ${isOfferChecked(offers, offer) ? 'checked' : ''} data-offer="${offer.title}">
+        <input class="event__offer-checkbox  visually-hidden" id="event-offer-luggage-${index}" type="checkbox" name="event-offer-luggage" ${isOfferChecked(offers, offer) ? 'checked' : ''}  data-type="${type}" data-offer-id="${offer.id}">
         <label class="event__offer-label" for="event-offer-luggage-${index}">
           <span class="event__offer-title">${offer.title}</span>
           &plus;&euro;&nbsp;
@@ -299,12 +299,12 @@ export default class EditFormView extends AbstractStatefulView {
 
   #offerChangeHandler = (evt) => {
     let selectedOffers = this._state.offers;
-    const offer = returnThisOffer(evt.target.dataset.offer);
+    const offerId = parseInt(evt.target.dataset.offerId, 10);
     if (evt.target.checked) {
-      selectedOffers.push(offer);
+      selectedOffers.push(offerId);
       selectedOffers.sort();
     } else {
-      selectedOffers = this._state.offers.filter((e) => e.title.toLowerCase() !== offer.title.toLowerCase());
+      selectedOffers = this._state.offers.filter((e) => e !== offerId);
     }
     this._setState({ offers: selectedOffers });
   };

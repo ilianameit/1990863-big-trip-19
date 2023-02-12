@@ -32,7 +32,7 @@ const points = [
     ids: '1',
     isFavorite:  Boolean(0, 1),
     type: type2,
-    offers:[getRandomArrayElement(returnOffers(type2)),getRandomArrayElement(returnOffers(type2))],
+    offers:[1, 2],
     img: destanition[getRandomPositiveInteger(0, destanition.length - 1)].pictures[0].src
   },
   {
@@ -43,7 +43,7 @@ const points = [
     ids: '1',
     isFavorite:  Boolean(0, 0),
     type: type3,
-    offers:returnOffers(type3),
+    offers: [1,3],
     img: destanition[getRandomPositiveInteger(0, destanition.length - 1)].pictures[0].src
   },
   {
@@ -54,7 +54,7 @@ const points = [
     ids: '1',
     isFavorite:  Boolean(0, 1),
     type: type4,
-    offers:returnOffers(type4),
+    offers:[2,3],
     img: destanition[getRandomPositiveInteger(0, destanition.length - 1)].pictures[0].src
   },
 
