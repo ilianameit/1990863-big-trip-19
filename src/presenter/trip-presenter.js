@@ -18,7 +18,6 @@ export default class TripPresenter {
 
   init() {
     const points = this.#pointModel.points;
-    console.log(points)
     this.#tripComponent = new TripView({point: points});
     this.#renderTrip();
   }
