@@ -9,8 +9,8 @@ export default class PointModel extends Observable{
     super();
     this.#pointsApiService = pointsApiService;
 
-    //this.#pointsApiService.points.then((points) => {
-    //console.log(points.map(this.#adaptToClient));
+    // this.#pointsApiService.points.then((points) => {
+    //  console.log(points.map(this.#adaptToClient));
     // Есть проблема: cтруктура объекта похожа, но некоторые ключи называются иначе,
     // а ещё на сервере используется snake_case, а у нас camelCase.
     // Можно, конечно, переписать часть нашего клиентского приложения, но зачем?

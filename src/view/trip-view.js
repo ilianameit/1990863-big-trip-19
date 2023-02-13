@@ -52,7 +52,6 @@ export default class TripView extends AbstractView{
   constructor({point}) {
     super();
     this.#point = point;
-
   }
 
   get template() {

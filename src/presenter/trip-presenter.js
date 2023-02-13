@@ -1,26 +1,35 @@
 import {render, RenderPosition} from '../framework/render.js';
 import TripView from '../view/trip-view.js';
-import {sortDayUp} from '../utils/point.js';
+//import {sortDayUp} from '../utils/point.js';
 
 export default class TripPresenter {
   #tripContainer = null;
   #tripComponent = null;
-  #points = [];
+  #pointModel = null;
 
 
-  constructor({tripContainer}, points) {
+  constructor({tripContainer, pointModel}) {
     this.#tripContainer = tripContainer;
-    this.#points = [...points.points].sort(sortDayUp);
-    this.#tripComponent = new TripView({point: this.#points});
+    this.#pointModel = pointModel;
+
+
+    this.#pointModel.addObserver(this.#handleModelEvent);
   }
 
   init() {
+    const points = this.#pointModel.points;
+    this.#tripComponent = new TripView({point: points});
     this.#renderTrip();
   }
 
   #renderTrip(){
-    if(this.#points.length){
+    const points = this.#pointModel.points;
+    if(points.length){
       render(this.#tripComponent, this.#tripContainer, RenderPosition.AFTERBEGIN);
     }
   }
+
+  #handleModelEvent = () => {
+    this.init();
+  };
 }
