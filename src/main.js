@@ -29,7 +29,7 @@ const boardPresenter = new BoardPresenter({
   filterModel,
   onNewPointDestroy: handleNewPointFormClose,
 });
-const tripPresenter = new TripPresenter({tripContainer: siteTrip}, pointModel);
+const tripPresenter = new TripPresenter({tripContainer: siteTrip, pointModel});
 
 const filtersPresenter = new FiltersPresenter({filterContainer: filterContainerElement, filterModel, pointModel});
 const newPointButtonComponent = new NewPointButtonView({
@@ -46,7 +46,11 @@ function handleNewPointButtonClick() {
 }
 
 tripPresenter.init();
-render(newPointButtonComponent, siteTrip);
+//render(newPointButtonComponent, siteTrip);
 filtersPresenter.init();
 boardPresenter.init();
-pointModel.init();
+//pointModel.init();
+pointModel.init()
+  .finally(() => {
+    render(newPointButtonComponent, siteTrip);
+  });
