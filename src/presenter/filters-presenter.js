@@ -23,7 +23,6 @@ export default class FiltersPresenter {
 
   get filters() {
     const points = this.#pointModel.points;
-
     return [
       {
         type: FilterType.EVERYTHING,

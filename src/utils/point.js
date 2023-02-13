@@ -68,4 +68,4 @@ function isDatesEqual(dateA, dateB) {
 function upperFirstCase(word){
   return (word[0].toUpperCase() + word.slice(1));
 }
-export {differentDate, humanizeDate, Format, sortDayUp, sortTime, sortPrice, calculateTotalPrice, isDatesEqual,upperFirstCase};
+export {differentDate, humanizeDate, Format, sortDayUp, sortTime, sortPrice, calculateTotalPrice, isDatesEqual, upperFirstCase};
